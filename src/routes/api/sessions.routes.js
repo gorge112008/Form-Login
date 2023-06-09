@@ -40,11 +40,14 @@ routerSessions.post("/signup", async (req, res) => {
   });
 
 routerSessions.post("/session",auth, (req, res) => {
-  if (req.session.user) {
+  const { user, password } = req.body;
+  if (req.session.counter) {
+    req.session.counter++;
     const msj = `BIENVENIDO ${req.session.user}`;
     res.status(200).json({ success: msj});
   } else {
-    const msj = `BIENVENIDO ${req.session.user} `;
+    const msj = `BIENVENIDO ${req.session.user}`;
+    req.session.counter = 1;
     res.status(200).json({success: msj});
 }
 });

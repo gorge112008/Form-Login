@@ -7,40 +7,49 @@
       <div class="login__form--contain">
         <form method="POST" action="#" name="form">
           <ul>
+            <div class="login__form__profile">
+            </div>
             <li>
+              <input type="checkbox" id="userCheck" class="viewUser" />
               <div class="login__form__input">
-                <label for="usuario" class="login--label">User</label>
+                <label class="login--label">User</label>
                 <input
-                class="login--input"
-                type="text"
-                placeholder="Enter user"
-                required
-              />
+                  class="login__user login--input"
+                  type="email"
+                  id="user"
+                  placeholder="Enter user"
+                  required
+                />
               </div>
             </li>
             <li>
+              <input type="checkbox" class="viewPassword" />
               <div class="login__form__input">
-                <label for="password" class="login--label">Password</label>
+                <label class="login--label">Password</label>
                 <input
-                class="login--input"
-                type="password"
-                placeholder="Enter Password"
-                required
-              />
+                  class="login__psw login--input"
+                  type="password"
+                  id="password"
+                  placeholder="Enter Password"
+                  required
+                />
+                <button type="button" id="btnTogglePsw" class="RevealPsw">
+                  <i class="fa-regular fa-eye-slash">
+                  </i></button>
               </div>
             </li>
           </ul>
           <div class="login__checkBox">
-                <input type="checkbox" class="form-check-input"/>
-                <label>Remind me</label>
+            <input type="checkbox" id="loginCheck" class="form-check-input" />
+            <label>Remind me</label>
           </div>
           <div class="login__inputBox">
             <div class="login__action">
-              <button type="submit" class="btnSignUp">
-                REGISTER
+              <button type="button" class="btnSignUp">
+                <b>SIGN UP</b>
               </button>
-              <button type="button" class="btnLogin">
-                ENTER
+              <button type="submit" class="btnLogin">
+                <b>GET IN</b>
               </button>
             </div>
           </div>
@@ -49,24 +58,6 @@
     </div>
   </div>
 </div>
-
-<!--<div>
-  <div class="chat-container">
-
-    <input type="text" placeholder="Username" name="username" id="username" />
-
-    <input
-      type="password"
-      placeholder="Password"
-      name="password"
-      id="password"
-    />
-    <button id="login">Enviar</button>
-
-  </div>
-
-</div>-->
-
 <!-- Compiled and minified JavaScript -->
 <script
   src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.24/dist/sweetalert2.all.min.js"

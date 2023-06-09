@@ -14,6 +14,7 @@ routerProducts.get("/products", middlewareGetProducts, async (req, res) => {
     res.status(500).json({ error: err });
   }
 });
+
 routerProducts.get("/products/:pid", async (req, res) => {
   try {
     const pid = req.params.pid;

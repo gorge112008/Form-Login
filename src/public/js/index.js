@@ -1,17 +1,16 @@
 /*INDEX*/
-
 /*******************************************************CONSTANTES/VARIABLES*************************************************************/
 /*ALL*/
-let RouteIndex="";
+let RouteIndex = "";
 const navHeader = document.querySelector(".header__nav"),
   navFilters = document.querySelector(".dinav__container--filters"),
   navPages = document.querySelector(".dinav__container--pages"),
   formAddProduct = document.querySelector(".dinamic__container--addProduct"),
   listProduct = document.querySelector(".dinamic__container--listProduct"),
-  btnReturn=document.querySelector("#return"),
+  btnReturn = document.querySelector("#return"),
   btnAddNewCart = document.querySelector(".btnAddNewCart"),
   btnExitCart = document.querySelector(".btnExitCart"),
-  btnClearCart =document.querySelector(".btnCleanCart");
+  btnClearCart = document.querySelector(".btnCleanCart");
 
 /*MLD*/
 const asideMLD = document.querySelector(".aside__MLD"),
@@ -36,65 +35,75 @@ const asideSD = document.querySelector(".aside__SD"),
 /*****************************************************************FUNCIONES*************************************************************/
 function actionRoute() {
   const route = window.location.pathname;
-  const regex= /^\/[^/]+/;
-  const routeName=route.match(regex);
-    if (route == "/"|| route=="/login"|| route=="/register"|| route=="/profile") {
-      RouteIndex="index";
-      navHeader.classList.add("hidden");
-      asideMLD.classList.add("hidden");
-      asideSD.classList.add("hidden");
-    }
+  const regex = /^\/[^/]+/;
+  const routeName = route.match(regex);
 
-    if (routeName == "/home") {
-      RouteIndex="home";
-    }
-
-    if (routeName == "/realtimeproducts") {
-      const single=validID(route);
-      single==1?RouteIndex="realTP/":RouteIndex="realTP";
-      mldasideAddProduct.classList.remove("hidden");
-      sdasideAddProduct.classList.remove("hidden");
-    }
-
-    if (routeName == "/products") {
-      const single=validID(route);
-      single==1?RouteIndex="productP/":RouteIndex="productP";
-    }
-
-    if (routeName == "/cart") {
-      const single=validID(route);
-      single==1?RouteIndex="cartP/":RouteIndex="cartP";
-    }
-
-    if (routeName == "/chat") {
-      RouteIndex="chat";
-    }
+  if (routeName == null) {
+  navHeader.classList.add("hidden");
+  asideMLD.classList.add("hidden");
+  asideSD.classList.add("hidden");
   }
 
+  if (routeName == "/home") {
+    RouteIndex = "home";
+    modulesActive();
+  }
 
-function validID(route){
-    const regex = /^\/[^/]+\/([^/]+)/;
-    const match = route.match(regex);
-    let existId;
-    if (match) {
-      existId = match[1];
-    }
-    if (existId) {
-      navHeader.classList.add("hidden");
-      navFilters&&navFilters.classList.add("hidden");
-      navPages&&navPages.classList.add("hidden");
-      btnAddNewCart&&btnAddNewCart.classList.add("hidden");
-      asideMLD.classList.add("hidden");
-      asideSD.classList.add("hidden");
-      btnExitCart&&btnExitCart.classList.remove("hidden");
-      formAddProduct&&formAddProduct.classList.remove("inactiveAdd");
-      listProduct&&listProduct.classList.remove("m12");
-      listProduct&&listProduct.classList.add("m7");
-      btnReturn.classList.add("hidden");
-      return 1;
-    }else{
-      return 2;
-    }
+  if (routeName == "/realtimeproducts") {
+    const single = validID(route);
+    single == 1 ? (RouteIndex = "realTP/") : (RouteIndex = "realTP");
+    mldasideAddProduct.classList.remove("hidden");
+    sdasideAddProduct.classList.remove("hidden");
+    modulesActive();
+  }
+
+  if (routeName == "/products") {
+    const single = validID(route);
+    single == 1 ? (RouteIndex = "productP/") : (RouteIndex = "productP");
+    modulesActive();
+  }
+
+  if (routeName == "/cart") {
+    const single = validID(route);
+    single == 1 ? (RouteIndex = "cartP/") : (RouteIndex = "cartP");
+    modulesActive();
+  }
+
+  if (routeName == "/chat") {
+    RouteIndex = "chat";
+    modulesActive();
+  }
+}
+
+function modulesActive() {
+  navHeader.classList.remove("hidden");
+  asideMLD.classList.remove("hidden");
+  asideSD.classList.remove("hidden");
+}
+
+function validID(route) {
+  const regex = /^\/[^/]+\/([^/]+)/;
+  const match = route.match(regex);
+  let existId;
+  if (match) {
+    existId = match[1];
+  }
+  if (existId) {
+    navHeader.classList.add("hidden");
+    navFilters && navFilters.classList.add("hidden");
+    navPages && navPages.classList.add("hidden");
+    btnAddNewCart && btnAddNewCart.classList.add("hidden");
+    asideMLD.classList.add("hidden");
+    asideSD.classList.add("hidden");
+    btnExitCart && btnExitCart.classList.remove("hidden");
+    formAddProduct && formAddProduct.classList.remove("inactiveAdd");
+    listProduct && listProduct.classList.remove("m12");
+    listProduct && listProduct.classList.add("m7");
+    btnReturn.classList.add("hidden");
+    return 1;
+  } else {
+    return 2;
+  }
 }
 
 function controlerForm() {
@@ -112,21 +121,19 @@ function controlerForm() {
 }
 
 /*****************************************************************EVENTOS*************************************************************/
-mldBtnAddProduct.onclick = () => {
-  controlerForm();
-};
 
-sdBtnAddProduct.onclick = () => {
+mldBtnAddProduct!=null?mldBtnAddProduct.onclick = () => {
   controlerForm();
-  asideButton.innerHTML == `<i class="fa-regular fa-square-plus fa-spin"></i>`
-    ? (asideButton.innerHTML = `<i class="fa-regular fa-square-plus fa-spin fa-spin-reverse"></i>`)
-    : (asideButton.innerHTML = `<i class="fa-regular fa-square-plus fa-spin"></i>`);
-};
+}:null;
 
-btnNavigationPanel.onclick = () => {
+sdBtnAddProduct!=null?sdBtnAddProduct.onclick = () => {
+  controlerForm();
+}:null;
+
+btnNavigationPanel!=null?btnNavigationPanel.onclick = () => {
   optionNavigationPanel.className == "asideMLD__menu--options-ul hidden"
     ? optionNavigationPanel.classList.remove("hidden")
     : optionNavigationPanel.classList.add("hidden");
-};
+}:null;
 
 actionRoute();

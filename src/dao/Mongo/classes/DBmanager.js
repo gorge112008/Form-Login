@@ -9,7 +9,7 @@ class ProductFileManager {
   async getProducts({ limit, page, sort, query }) {
     try {
       let products;
-      products=await productsModel.paginate(query,{limit,page,sort});
+      products = await productsModel.paginate(query, { limit, page, sort });
       return products;
     } catch (err) {
       throw err;
@@ -67,7 +67,9 @@ class CartFileManager {
   }
   async getCartId(id) {
     try {
-      const cart = await cartsModel.find({ _id: id }).populate('products.payload.product');
+      const cart = await cartsModel
+        .find({ _id: id })
+        .populate("products.payload.product");
       return cart;
     } catch (err) {
       throw err;
@@ -136,6 +138,7 @@ class MessageFileManager {
         new: true,
         upsert: true,
       });
+      return message;
     } catch (err) {
       throw err;
     }
@@ -154,19 +157,24 @@ class MessageFileManager {
 /*********************************************************USERS*************************************************************/
 
 class UserFileManager {
-  async getUsers(query) {
+  async getUsers() {
     try {
-      if (query) {
-        const Users = await userModel.find(query);
-        return Users;
-      } else {
-        const Users = await userModel.find();
-        return Users;
-      }
+      const Users = await userModel.find();
+      return Users;
     } catch (err) {
       throw err;
     }
   }
+
+  async getUserUnique(query){
+    try {
+      const User = await userModel.findOne(query);
+      return User;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getUserId(id) {
     try {
       const User = await userModel.findOne({ _id: id });
@@ -175,20 +183,18 @@ class UserFileManager {
       throw err;
     }
   }
+  async getUserbyEmail(email) {
+    try {
+      const User = await userModel.findOne({ email: email });
+      return User;
+    } catch (err) {
+      throw err;
+    }
+  }
   async addUser(newUser) {
     try {
-      let User;
-      const { email } = newUser;
-      const existingUser = await userModel.findOne({ email });
-      if (existingUser && existingUser.email == email) {
-        User = await userModel.find({ email: email });
-        User = User[0];
-        console.log("El correo ya existe", User);
-      } else {
-        User = await userModel.create(newUser);
-        console.log("Correo nuevo creado", User);
-      }
-      return User;
+      const response = await userModel.create(newUser);
+      return response;
     } catch (err) {
       throw err;
     }

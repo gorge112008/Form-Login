@@ -3,9 +3,8 @@
 /**********************************************************CONSTANTES/VARIABLES*************************************************************/
 
 const socket = io();
-let URLdomain = window.location.host,
-  protocol = window.location.protocol;
-let Url = protocol + "//" + URLdomain + "/api/products";
+let URLorigin=window.location.origin;
+let UrlP = URLorigin + "/api/products";
 let opc = "static";
 let btnsDelete;
 let storeProducts = [],
@@ -104,7 +103,7 @@ async function filters() {
       }
     }
     let Params = {
-      limit: values.limit,
+      limit: 100,
       page: values.page,
       sort: values.sort,
     };
@@ -112,6 +111,11 @@ async function filters() {
       ? (totalParams = Params)
       : (totalParams = Object.assign(Params, query));
     storeProducts = await getData(totalParams);
+  }else{
+    let Params = {
+      limit: 100,
+    };
+    storeProducts = await getData(Params);
   }
   pagination();
   if (storeProducts.length == 0) {
@@ -191,8 +195,7 @@ async function focusbtn() {
 async function getData(params) {
   try {
     const queryParams = new URLSearchParams(params).toString();
-    console.log(queryParams);
-    let response = await fetch(`${Url}?${queryParams}`, {
+    let response = await fetch(`${UrlP}?${queryParams}`, {
       method: "GET",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
@@ -208,7 +211,7 @@ async function getData(params) {
 }
 
 async function getDatabyID(id) {
-  let response = await fetch(`${Url}/${id}`, {
+  let response = await fetch(`${UrlP}/${id}`, {
     method: "GET",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": true,
@@ -248,6 +251,7 @@ selectStatus.addEventListener("change", async (event) => {
       options.query
         ? (options.query = Object.assign(options.query, query))
         : (options.query = query);
+        options.page = page;
     }
   } else {
     options = new NewParams(null, null, null, query);
@@ -282,6 +286,7 @@ selectCategory.addEventListener("change", async (event) => {
       options.query
         ? (options.query = Object.assign(options.query, query))
         : (options.query = query);
+      options.page = page;
     }
   } else {
     options = new NewParams(null, null, null, query);

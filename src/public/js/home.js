@@ -3,10 +3,8 @@
 /**********************************************************CONSTANTES/VARIABLES*************************************************************/
 
 const socket = io();
-let URLPathName = window.location.pathname,
-  URLdomain = window.location.host,
-  protocol = window.location.protocol;
-let Url = protocol + "//" + URLdomain + "/api/products";
+let URLorigin=window.location.origin;
+let UrlP = URLorigin + "/api/products";
 let opc = "static";
 let btnsDelete, btnAdd;
 let storeProducts = [],
@@ -295,11 +293,10 @@ async function filters() {
       icon: "warning",
       confirmButtonText: "Accept",
     });
+  } 
     selectDelete();
-  } else {
-    selectDelete();
-  }
 }
+
 
 function saveUpdate(data) {
   Swal.fire({
@@ -386,6 +383,8 @@ async function pagination() {
     prevLink,
     nexLink,
   } = dataPagination;
+  let prevLinkUp=URLorigin+prevLink;
+  let nexLinkUp=URLorigin+nexLink;
   dinamicPages.innerHTML = "";
   dinamicPages.innerHTML = `<p>Page<button>${page}</button>of ${totalPages}</p>`;
   if (hasPrevPage == false) {
@@ -437,7 +436,7 @@ async function focusAction() {
 async function getData(params) {
   try {
     const queryParams = new URLSearchParams(params).toString();
-    let response = await fetch(`${Url}?${queryParams}`, {
+    let response = await fetch(`${UrlP}?${queryParams}`, {
       method: "GET",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
@@ -453,7 +452,7 @@ async function getData(params) {
 }
 
 async function getDatabyID(id) {
-  let response = await fetch(`${Url}/${id}`, {
+  let response = await fetch(`${UrlP}/${id}`, {
     method: "GET",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": true,
@@ -465,7 +464,7 @@ async function getDatabyID(id) {
 
 async function postData(data) {
   try {
-    let response = await fetch(Url, {
+    let response = await fetch(UrlP, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -488,7 +487,7 @@ async function postData(data) {
 
 async function updateData(id, data) {
   try {
-    let response = await fetch(`${Url}/${id}`, {
+    let response = await fetch(`${UrlP}/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -512,7 +511,7 @@ async function updateData(id, data) {
 
 async function deleteData(id) {
   try {
-    let response = await fetch(`${Url}/${id}`, {
+    let response = await fetch(`${UrlP}/${id}`, {
       method: "DELETE",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
@@ -761,6 +760,7 @@ selectStatus.addEventListener("change", async (event) => {
   }
   sessionStorage.setItem("values", JSON.stringify(options));
   filters();
+  pagination();
 });
 
 selectOrder.addEventListener("change", async (event) => {
@@ -770,6 +770,7 @@ selectOrder.addEventListener("change", async (event) => {
     : (options = new NewParams(null, null, selectedValue, null));
   sessionStorage.setItem("values", JSON.stringify(options));
   filters();
+  pagination();
 });
 
 selectCategory.addEventListener("change", async (event) => {
@@ -796,6 +797,7 @@ selectCategory.addEventListener("change", async (event) => {
   }
   sessionStorage.setItem("values", JSON.stringify(options));
   filters();
+  pagination();
 });
 
 selectPrevPage.addEventListener("click", () => {

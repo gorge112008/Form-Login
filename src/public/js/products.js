@@ -1,9 +1,7 @@
 const socket = io();
-let URLPathName = window.location.pathname,
-  URLdomain = window.location.host,
-  protocol = window.location.protocol;
-let UrlP = protocol + "//" + URLdomain + "/api/products";
-let UrlC = protocol + "//" + URLdomain + "/api/carts";
+let URLorigin=window.location.origin;
+let UrlP = URLorigin + "/api/products";
+let UrlC = URLorigin + "/api/carts";
 let opc = "static";
 let btnAdd;
 let storeProducts = [],
@@ -331,6 +329,8 @@ async function pagination() {
     prevLink,
     nexLink,
   } = dataPagination;
+  let prevLinkUp=URLorigin+prevLink;
+  let nexLinkUp=URLorigin+nexLink;
   dinamicPages.innerHTML = "";
   dinamicPages.innerHTML = `<p>Page<button>${page}</button>of ${totalPages}</p>`;
   if (hasPrevPage == false) {
@@ -739,6 +739,7 @@ selectOrder.addEventListener("change", async (event) => {
     : (options = new NewParams(null, null, selectedValue, null));
   sessionStorage.setItem("values", JSON.stringify(options));
   filters();
+  pagination();
 });
 
 selectCategory.addEventListener("change", async (event) => {
@@ -765,6 +766,7 @@ selectCategory.addEventListener("change", async (event) => {
   }
   sessionStorage.setItem("values", JSON.stringify(options));
   filters();
+  pagination();
 });
 
 selectPrevPage.addEventListener("click", () => {

@@ -2,10 +2,10 @@
 
 /*********************************************************CONSTANTES/VARIABLES*************************************************************/
 const socket = io();
-let URLdomain = window.location.host;
-let protocol = window.location.protocol;
-let UrlU = protocol + "//" + URLdomain + "/api/users/";
-let UrlM = protocol + "//" + URLdomain + "/api/messages/";
+let URLorigin=window.location.origin;
+let UrlU = URLorigin + "/api/users";
+let UrlM = URLorigin + "/api/messages";
+let UrlLogin = URLorigin + "/sessions/";
 let swalActive = "inactive";
 let email;
 let backMessages = [];
@@ -15,6 +15,7 @@ let log = document.querySelector(".chat__container__dinamic");
 const chatBox = document.getElementById("chatBox"),
   btnSend = document.getElementById("btnSend"),
   emailLogged = document.querySelector(".nav__container--email-logged"),
+  btnLogout=document.querySelector(".btnLogout"),
   existSession = sessionStorage.getItem("user");
 
 /*****************************************************************CLASES*************************************************************/
@@ -285,65 +286,6 @@ socket.on("messageLogs", (lastMessage) => {
 if (existSession != null) {
   email = existSession;
   validateSession(email);
-} else {
-  swalActive = "active";
-  Swal.fire({
-    title: '<b class="chat__login--tittle">Welcome to chat</b>',
-    html: '<u class="chat__login--text">Enter your email</u>',
-    input: "email",
-    showDenyButton: true,
-    confirmButtonText: '<b class="chat__login--confirm">Confirm</b>',
-    denyButtonText: '<b class="chat__login--exit">Exit</b>',
-    showLoaderOnConfirm: true,
-    background:
-      '#fff url("https://img.freepik.com/vector-gratis/fondo-degradado-cielo-pastel_23-2148917404.jpg?w=2000")',
-    footer:
-      '<a class="chat__footer--left" href="../home">Go to Home</a><a class="chat__footer--right" href="../realtimeproducts">Go to RealtimeProducts</a>',
-    inputPlaceholder: "Enter here...",
-    preConfirm: () => {
-      swalActive = "inactive";
-    },
-    allowOutsideClick: false,
-    backdrop: "rgba(0,0,123,0.4)",
-  })
-    .then(async (result) => {
-      if (result.isConfirmed) {
-        if (result.isDismissed) {
-          window.location.reload();
-        } else {
-          if (result.value) {
-            email = result.value;
-            const newuser = new newUser(email);
-            emailLogged.innerHTML = `<b>${email}<b>`;
-            postData(UrlU, newuser)
-              .then((data) => {
-                  const { email } = data;
-                  console.log("Email is stored: " + email);
-                  sessionStorage.setItem("user", email);     
-              })
-              .catch((error) => console.log("Error:" + error));
-            socket.emit("newUser", { user: email, id: socket.id });
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Session Started Successfully",
-              timer: 1500,
-              showConfirmButton: false,
-              allowOutsideClick: false,
-            });
-            const bubbleMessage = document.querySelectorAll(
-              ".chat__message--bubble"
-            );
-            bubbleMessage[bubbleMessage.length - 1].scrollIntoView();
-          }
-        }
-      } else if (result.isDenied) {
-        window.location.href = "../";
-      }
-    })
-    .catch((error) => {
-      Swal.showValidationMessage(`Request failed: ${error}`);
-    });
 }
 
 chatBox.addEventListener("keyup", (e) => {
@@ -356,6 +298,37 @@ btnSend.addEventListener("click", () => {
     sendMessage();
 });
 
-emailLogged.onclick = () => {
-  validateSession(email).click();
-};
+emailLogged.addEventListener("click", () => {
+  validateSession(email);
+});
+
+
+btnLogout.addEventListener("click",async () => {
+  const msj=await closeSession();
+  if(msj){
+    console.log(msj);
+    window.location.href="../login";
+  }
+});
+
+async function closeSession() {
+  try {
+    let response = await fetch(UrlLogin+"logout" , {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      return response.json();
+    }
+  } catch {
+    console.log(Error);
+  }
+  }

@@ -1,9 +1,7 @@
 const socket = io();
-let URLPathName = window.location.pathname,
-  URLdomain = window.location.host,
-  protocol = window.location.protocol;
-let UrlP = protocol + "//" + URLdomain + "/api/products";
-let UrlC = protocol + "//" + URLdomain + "/api/carts";
+let URLorigin=window.location.origin;
+let UrlP = URLorigin + "/api/products";
+let UrlC = URLorigin + "/api/carts";
 let opc = "static";
 let btnRemove, btnCloseView, btnRemoveCart, btnTransferCart;
 let storeCarts = [],

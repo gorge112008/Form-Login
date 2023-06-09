@@ -40,7 +40,6 @@ routerSessions.post("/signup", async (req, res) => {
   });
 
 routerSessions.post("/session",auth, (req, res) => {
-  const { user, password } = req.body;
   if (req.session.counter) {
     req.session.counter++;
     const msj = `BIENVENIDO ${req.session.user}`;

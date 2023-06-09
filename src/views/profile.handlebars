@@ -1,9 +1,30 @@
-<div>
-  <div>
-    Profile
-    
+<div class="main__container--side col s2"></div>
+<div class="main__container__dinamic col s9">
+  <div class="dinamic row">
+    <div class="nav__dinamic row noMargin">
+    </div>
+    <div>
+      {{#each resUser}}
+        <div>
+          <div>{{user}}</div>
+          <p>{{message}}</p>
+        </div>
+      {{/each}}
+    </div>
+
   </div>
 </div>
-
+<div class="main__container--side col s1"></div>
+<div id="return"><a href="/" type="button"><i
+      class="fas fa-light fa-reply-all"
+    ></i><b>RETURN</b></a></div>
+<button type="button" id="validate">VALIDATE</button>
+<!-- Compiled and minified JavaScript -->
+<script
+  src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.24/dist/sweetalert2.all.min.js"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+></script>
 <script src="/js/index.js"></script>
 <script src="/js/index2.js"></script>

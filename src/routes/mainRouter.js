@@ -33,7 +33,7 @@ routerViews.get("/root", validateSession, (req, res) => {
   }
 });
 
-routerViews.get("/profile", validateSession, (req, res) => {
+routerViews.get("/profile/:pid", validateSession, (req, res) => {
   res.render("profile", {});
 });
 

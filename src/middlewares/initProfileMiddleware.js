@@ -11,6 +11,7 @@ const middlewareInitProfile = async (req, res, next) => {
         "Access-Control-Allow-Credentials": true,
       },
     });
+    console.log(resUser.data);
     res.locals.resUser = resUser.data;
     /*PRUEBA SIN PRODUCTOS*/
     //res.locals.resProducts=[];

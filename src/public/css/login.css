@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   border: solid black 1px;
-  background-color: #faa;
+  background-color: #fdc;
 }
 
 .login__container {
@@ -13,6 +13,7 @@
   width: 80%;
   height: 90vh;
   outline: solid black 1px;
+  transition: all ease-in-out 900ms;
 }
 
 .login__container__form {
@@ -28,6 +29,7 @@
   border-top-right-radius: 80px;
   border-bottom-left-radius: 80px;
   border: solid black 3px;
+  transition: all ease-in-out 900ms;
 }
 
 .login__form--title {
@@ -36,7 +38,7 @@
   text-align: center;
   top: 0;
   margin: 0;
-  width: 100%;
+  width: 60%;
 }
 
 .login__form--title b {
@@ -62,7 +64,7 @@
   align-items: center;
   justify-content: center;
   width: 80%;
-  height: 75%;
+  height: 85%;
   filter: drop-shadow(0 1px 10px #edd1ff);
 }
 
@@ -73,8 +75,7 @@
   justify-content: center;
   flex-direction: column;
   height: fit-content;
-  width: fit-content;
-  font-size: 1rem;
+  width: max-content;
 }
 
 .login__form__profile {
@@ -96,10 +97,11 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 14rem;
+  width: 100%;
   margin-bottom: 15px;
   font-size: 1rem;
   height: 11vh;
+  
 }
 
 .login--label {
@@ -230,19 +232,24 @@
   width: 100%;
 }
 
-.btnSignUp {
+.btnSignUp{
   position: absolute;
   display: block;
   margin: auto;
   left: 0;
   top: 0;
   bottom: 0;
-  background-color: rgb(184, 246, 242);
+  background-color: rgb(217, 220, 219);
   cursor: pointer;
-  border: solid aqua 2px;
+  border: solid rgb(183, 183, 183) 2px;
   border-radius: 5px;
   width: 45%;
   padding: 0 10px;
+}
+
+.btnSignUp:hover {
+  background-color: rgb(184, 246, 242);
+  border: solid aqua 2px;
 }
 
 .btnSignUp b{
@@ -266,6 +273,11 @@
   padding: 0 10px;
 }
 
+.btnLogin:hover {
+  border: solid rgb(112, 186, 0) 2px;
+  background-color: rgb(185, 249, 89);
+}
+
 .btnLogin b{
     font-family: "Times New Roman", Times, serif;
     font-size: 1rem;
@@ -276,13 +288,19 @@
 
 @media only screen and (max-width: 37.5rem) {
   /*DEVICE CEL LOGIN FORM BLOCK*/
+  .login__container {
+    width:  100%;
+  }
   .login__container__form {
     flex-direction: column;
     width: 80%;
-    height: 80%;
+    height: 90%;
+  }
+  .login__form__profile {
+    height: 13vh;
+    width: 13vh;
   }
 }
-
 /*CSS DEVICE > 992px (62rem) (base 16px=1rem) (LAP)*/
 
 @media only screen and (min-width: 69rem) {

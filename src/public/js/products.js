@@ -2,6 +2,7 @@ const socket = io();
 let URLorigin=window.location.origin;
 let UrlP = URLorigin + "/api/products";
 let UrlC = URLorigin + "/api/carts";
+let UrlLogin = URLorigin + "/sessions/";
 let opc = "static";
 let btnAdd;
 let storeProducts = [],
@@ -33,6 +34,7 @@ const validateProducts = document.getElementById("validate"),
   selectCategory = document.getElementById("categoryProducts"),
   selectStatus = document.getElementById("statusProducts"),
   categoryOption = document.getElementById("selectCategory");
+const userSession = JSON.parse(sessionStorage.getItem("userSession"));
 
 /*****************************************************************CLASES*************************************************************/
 class NewCart {
@@ -51,6 +53,33 @@ class NewParams {
 }
 
 /*****************************************************************FUNCIONES*************************************************************/
+async function VerificateSession(ActiveSession) {
+  try {
+    const {msj, rol}=ActiveSession
+    if (rol == "admin") {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        title: "ADMIN SESSION ACTIVE",
+        text: msj,
+        showConfirmButton: true,
+      });
+      sessionStorage.removeItem("userSession");
+    } else if (rol == "user") {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        title: "USER SESSION ACTIVE",
+        text: msj,
+        showConfirmButton: true,
+      });
+      sessionStorage.removeItem("userSession");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function createListStock(stock) {
   let optListStock = [];
   for (let i = 1; i <= stock; i++) {
@@ -580,6 +609,7 @@ socket.on("callProducts", async (getProducts) => {
   focusAction();
   selectAction();
   filters();
+  userSession!= null&&VerificateSession(userSession);
 });
 
 socket.on("f5deleteProduct", async (deletedMsj) => {
@@ -607,8 +637,6 @@ socket.on("f5updateProduct", async (updatedMsj) => {
     let productUpdate = await getDatabyID(storeProducts[0]._id);
     storeProducts = productUpdate;
     selectAction();
-    const btnDel = document.querySelector(".card__btnDelete");
-    btnDel.classList.remove("hidden");
   } else {
     storeProducts = await getData({});
     filters();

@@ -1,15 +1,31 @@
 import { Server } from "socket.io";
-import { resProducts, resMessages,resCarts } from "./routes/mainRouter.js";
+import {
+  publicProducts,
+  publicMessages,
+  publicCarts,
+} from "./controllers/publicController.js";
+
+import {
+  privateProducts,
+  privateMessages,
+  privateCarts,
+} from "./controllers/privateController.js";
 
 async function initSocketServer(server) {
   const io = new Server(server);
 
   io.on("connection", (socket) => {
     console.log("New client connected");
-    socket.emit("backMessages", resMessages);
-    socket.emit("callProducts", resProducts);
-    socket.emit("callCarts", resCarts);
-    
+    publicMessages
+      ? socket.emit("backMessages", publicMessages)
+      : socket.emit("backMessages", privateMessages);
+    publicProducts
+      ? socket.emit("callProducts", publicProducts)
+      : socket.emit("callProducts", privateProducts);
+    publicCarts
+      ? socket.emit("callCarts", publicCarts)
+      : socket.emit("callCarts", privateCarts);
+
     socket.on("addproduct", async (newProduct) => {
       socket.broadcast.emit("f5NewProduct", newProduct);
     });
@@ -33,7 +49,7 @@ async function initSocketServer(server) {
     socket.on("viewingProduct", async (id) => {
       io.emit("viewingProduct", id);
     });
-    
+
     socket.on("addingProductCart", async (msj) => {
       io.emit("addingProductCart", msj);
     });
@@ -45,7 +61,7 @@ async function initSocketServer(server) {
     socket.on("removeProduct", async (msj) => {
       io.emit("removeProduct", msj);
     });
-    
+
     socket.on("emptyCart", async (msj) => {
       io.emit("emptyCart", msj);
     });

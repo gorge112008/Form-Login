@@ -2,45 +2,63 @@ import { Router } from "express";
 const routerCookie = Router();
 
 /*****************************************************************GET*************************************************************/
-routerCookie.get("/getCookie", (req, res) => {
-  //TRAER COOKIE
-  res.send(req.cookies);
+/*routerCookie.get('/set', (req, res) => {
+  // Configurar una cookie
+  res.cookie('miCookie', 'valor de la cookie', { maxAge: 3600000, signed: true });
+  res.send('Cookie establecida');
 });
 
+routerCookie.get('/get', (req, res) => {
+  // Obtener el valor de una cookie
+  const miCookie = req.signedCookies;
+  res.send(`El valor de la cookie es:`+JSON.stringify(miCookie));
+});
+*/
 routerCookie.get("/getUserCookie", (req, res) => {
   const userCookie = req.signedCookies.UserCookie;
-  // Verificar si la cookie existe
-  userCookie?res.send({email:userCookie}):res.send({email:""});
+  userCookie ? res.send({ email: userCookie.email }) : res.send({ email: "" });
 });
+
+routerCookie.get("/getSessionCookie", (req, res) => {
+  const sessionCookie = req.signedCookies.connect.sid;
+  if (sessionCookie) {
+    res.send({ data: sessionCookie});
+  }else{
+    res.send({ data: ""});
+  }
+});
+
+/*****************************************************************POST*************************************************************/
 
 routerCookie.post("/setUserCookie", (req, res) => {
-  //SETEAR COOKIE
   const { user, timer } = req.body;
-  const time = timer ? timer : 5000;
-  res.cookie("UserCookie", user, { maxAge: time , signed: true,}).send({email:user});
-});
-
-routerCookie.get("/delUserCookie", (req, res) => {
-  const nameCookie= req.body.name;
-  res.clearCookie(nameCookie).send("Cookie borrada");
-});
-
-routerCookie.post("/setSignedCookie", (req, res) => {
-  const { user, password } = req.body;
+  const time = timer ? timer : null;
   res
-    .cookie("User", user, {
-      maxAge: 30000,
+    .cookie("UserCookie", { email: user }, {
+      maxAge: time,
       signed: true,
-    })
-    .cookie("Password", password, {
-      maxAge: 30000,
-      signed: true,
-    })
-    .send(req.body);
+    });
+  res.send({ email: user });
 });
+/*
+routerCookie.post("/setSessionCookie", (req, res) => {
+  const { data, rol } = req.body;
+  res
+    .cookie(
+      "SessionCookie",
+      { data:data ,rol: rol},
+      {
+        signed: true,
+      }
+    );
+  res.send({data:data ,rol: rol});
+});*/
 
-routerCookie.get("/getSignedCookie", (req, res) => {
-  res.send(req.signedCookies);
+/*****************************************************************DELETE*************************************************************/
+routerCookie.delete("/delCookie", (req, res) => {
+  const nameCookie = req.body.name;
+  res.clearCookie(nameCookie);
+  res.send("Cookie borrada");
 });
 
 export default routerCookie;

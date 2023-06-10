@@ -3,7 +3,7 @@
 /**********************************************************CONSTANTES/VARIABLES*************************************************************/
 
 const socket = io();
-let URLorigin=window.location.origin;
+let URLorigin = window.location.origin;
 let UrlP = URLorigin + "/api/products";
 let opc = "static";
 let btnsDelete;
@@ -58,7 +58,9 @@ async function createHtml() {
     let html;
     let error;
     for (const product of storeProducts) {
-      product.status == "error" && opc == "static"?error="error":error="";
+      product.status == "error" && opc == "static"
+        ? (error = "error")
+        : (error = "");
       html = `<div class="container__grid__card ${error}">
           <div class="card">
             <div class="card-header--filled">
@@ -111,7 +113,7 @@ async function filters() {
       ? (totalParams = Params)
       : (totalParams = Object.assign(Params, query));
     storeProducts = await getData(totalParams);
-  }else{
+  } else {
     let Params = {
       limit: 100,
     };
@@ -125,8 +127,7 @@ async function filters() {
       icon: "warning",
       confirmButtonText: "Accept",
     });
-   
-  } 
+  }
   await createHtml();
 }
 
@@ -251,7 +252,7 @@ selectStatus.addEventListener("change", async (event) => {
       options.query
         ? (options.query = Object.assign(options.query, query))
         : (options.query = query);
-        options.page = page;
+      options.page = page;
     }
   } else {
     options = new NewParams(null, null, null, query);

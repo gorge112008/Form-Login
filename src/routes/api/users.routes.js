@@ -11,7 +11,6 @@ routerUser.get("/users", async (req, res) => {
     let users=Object.keys(query).length > 0
     ? await UserFM.getUserUnique(query)
     : await UserFM.getUsers();
-    
     if (limit && !isNaN(Number(limit))) {
       users = users.slice(0, limit);
     }
@@ -37,7 +36,7 @@ routerUser.post("/users", async (req, res) => {
   try {
     const newUser = req.body;
     const response = await UserFM.addUser(newUser);
-    res.status(200).send(response);
+    res.status(201).send(response);
   } catch (err) {
     res.status(500).json({ error: err });
   }

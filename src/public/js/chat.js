@@ -2,10 +2,11 @@
 
 /*********************************************************CONSTANTES/VARIABLES*************************************************************/
 const socket = io();
-let URLorigin=window.location.origin;
+let URLorigin = window.location.origin;
 let UrlU = URLorigin + "/api/users";
 let UrlM = URLorigin + "/api/messages";
 let UrlLogin = URLorigin + "/sessions/";
+let UrlCook = URLorigin + "/api/";
 let swalActive = "inactive";
 let email;
 let backMessages = [];
@@ -14,21 +15,11 @@ let log = document.querySelector(".chat__container__dinamic");
 
 const chatBox = document.getElementById("chatBox"),
   btnSend = document.getElementById("btnSend"),
-  emailLogged = document.querySelector(".nav__container--email-logged"),
-  btnLogout=document.querySelector(".btnLogout"),
-  existSession = sessionStorage.getItem("user");
+  emailLogged = document.querySelector(".nav__container--email-logged u"),
+  rolLogged = document.querySelector(".nav__container--email-logged b");
+
 
 /*****************************************************************CLASES*************************************************************/
-
-class newUser {
-  constructor(email) {
-    this.id = socket.id;
-    this.first_name = "";
-    this.last_name = "";
-    this.email = email;
-  }
-}
-
 class newMessage {
   constructor(user, message) {
     this.user = user;
@@ -69,16 +60,15 @@ function loadMessages() {
       </div>
       `;
     log.innerHTML = messages;
-    const bubbleMessage = document.querySelectorAll(".chat__message--bubble");
-    bubbleMessage[bubbleMessage.length - 1].scrollIntoView();
+    focusLastMessage();
   });
 }
 
-async function validateSession(email) {
+async function validateSession(rol, email) {
   swalActive = "active";
   Swal.fire({
-    title: "ACTIVE SESSION",
-    text: "Welcome user: " + email,
+    title: `${rol} ACTIVE SESSION`,
+    text: "Welcome: " + email,
     icon: "info",
     showDenyButton: true,
     confirmButtonText: "Continue session",
@@ -86,10 +76,9 @@ async function validateSession(email) {
     preConfirm: () => {
       swalActive = "inactive";
     },
-  }).then((result) => {
+  }).then(async(result) => {
     if (result.isConfirmed) {
-      emailLogged.innerHTML = `<b>${existSession}<b>`;
-      socket.emit("newUser", { user: existSession, id: socket.id });
+      socket.emit("newUser", { user: email, id: socket.id });
       loadMessages();
       Swal.fire({
         position: "center",
@@ -100,16 +89,16 @@ async function validateSession(email) {
         timer: 1500,
       });
     } else if (result.isDenied) {
-      closeSession(email);
+      await closeSession(rol, email);
     }
   });
 }
 
-async function closeSession(email) {
+async function closeSession(rol, email) {
   swalActive = "active";
   Swal.fire({
     title: "ARE YOU SURE TO END YOUR SESSION?",
-    text: "Active session: " + email + "",
+    text: `${rol} SESSION: ${email}`,
     icon: "warning",
     showDenyButton: true,
     confirmButtonColor: "#3085d6",
@@ -119,28 +108,31 @@ async function closeSession(email) {
     preConfirm: () => {
       swalActive = "inactive";
     },
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      setTimeout(() => {
-        sessionStorage.removeItem("user");
-        window.location.reload();
-      }, 1500),
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "You have successfully ended your session",
-          showConfirmButton: false,
-          allowOutsideClick: false,
-        });
+      const msj = await logoutSession();
+      if (msj) {
+        setTimeout(() => {
+          window.location.href = "../login";
+        }, 3000),
+          Swal.fire({
+            position: "center",
+            icon: "info",
+            title: msj,
+            text: "Redirigiendo al login",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+          });
+      }
     } else if (result.isDenied) {
-      validateSession(email);
+      validateSession(rol, email);
     }
   });
 }
 
-function sendMessage(){
+function sendMessage() {
   if (chatBox.value.trim().length > 0) {
-    const newmessage = new newMessage(email, chatBox.value);
+    const newmessage = new newMessage(emailLogged.innerHTML, chatBox.value);
     postData(UrlM, newmessage).then((lastMessage) => {
       console.log("Message send");
       socket.emit("newMessage", lastMessage);
@@ -149,7 +141,12 @@ function sendMessage(){
   }
 }
 
-async function focusbtn(){
+function focusLastMessage() {
+  const bubbleMessage = document.querySelectorAll(".chat__message--bubble");
+  bubbleMessage[bubbleMessage.length - 1].scrollIntoView();
+}
+
+async function focusbtn() {
   const buttonsMax = document.querySelectorAll(".div__container--focusBtn a");
   const buttonsMin = document.querySelectorAll(".asideSD__dropdown--contain a");
   buttonsMax.forEach((button) => {
@@ -248,6 +245,8 @@ async function deleteData(url, id) {
 socket.on("backMessages", (getMessages) => {
   Object.assign(backMessages, getMessages);
   focusbtn();
+  focusLastMessage();
+  validateSession(rolLogged.innerHTML, emailLogged.innerHTML);
   console.log("SUMMARY OF MESSAGES: " + backMessages.length);
 });
 
@@ -278,16 +277,10 @@ socket.on("messageLogs", (lastMessage) => {
       </div>
     `;
   log.innerHTML += newBubble;
-  const bubbleMessage = document.querySelectorAll(".chat__message--bubble");
-  bubbleMessage[bubbleMessage.length - 1].scrollIntoView();
+  focusLastMessage();
 });
 
 /*****************************************************************EVENTOS*************************************************************/
-if (existSession != null) {
-  email = existSession;
-  validateSession(email);
-}
-
 chatBox.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     sendMessage();
@@ -295,25 +288,16 @@ chatBox.addEventListener("keyup", (e) => {
 });
 
 btnSend.addEventListener("click", () => {
-    sendMessage();
+  sendMessage();
 });
 
 emailLogged.addEventListener("click", () => {
-  validateSession(email);
+  validateSession(rolLogged.innerHTML, emailLogged.innerHTML);
 });
 
-
-btnLogout.addEventListener("click",async () => {
-  const msj=await closeSession();
-  if(msj){
-    console.log(msj);
-    window.location.href="../login";
-  }
-});
-
-async function closeSession() {
+async function logoutSession() {
   try {
-    let response = await fetch(UrlLogin+"logout" , {
+    let response = await fetch(UrlLogin + "logout", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -331,4 +315,21 @@ async function closeSession() {
   } catch {
     console.log(Error);
   }
+}
+
+async function delDataCookie(name) {
+  try {
+    fetch(UrlCook + "delCookie", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+      body: JSON.stringify(name),
+    });
+  } catch (error) {
+    console.log(error);
   }
+}

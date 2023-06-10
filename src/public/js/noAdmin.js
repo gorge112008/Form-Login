@@ -6,14 +6,14 @@ let sesint = setInterval(() => {
       //INDICANDO LA CANTIDAD DE INTERVALOS QUE DURARÁ LA SESION EN 5, CON EL VALOR ESTABLECIDO SERÁN 5 MINUTOS DE INACTIVIDAD.
       clearInterval(sesint); //SI SE CIERRA LA SESION SE LIMPIA EL INTERVALO DE INACTIVIDAD
       setTimeout(() => {
-        window.location.href = "../login"; //SI SE ACTIVA LA INACTIVIDAD SE CIERRA LA SESIÓN Y SE RETORNA A LA PÁGINA DE INGRESO.
+        window.location.href = "../profile"; //SI SE ACTIVA LA INACTIVIDAD SE CIERRA LA SESIÓN Y SE RETORNA A LA PÁGINA DE INGRESO.
       }, 1000),
         Swal.fire({
           //MOSTRANDO MENSAJE DE INACTIVIDAD MEDIANTE LA LIBRERIA SWEETALERT2.
           position: "center",
           icon: "info",
           title:
-            "Redirecting to Login...",
+            "Redirecting to Profile...",
           showConfirmButton: false,
         });
     }

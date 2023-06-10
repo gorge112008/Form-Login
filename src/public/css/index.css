@@ -6,7 +6,17 @@
     flex-direction: column;
     position: sticky;
   }
-  
+  .index__route--static,
+  .index__route--dinamic,
+  .index__route--products,
+  .index__route--carts,
+  .index__route--chat{
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .index__route--static a {
     /*STATIC BUTTON*/
     position: relative;

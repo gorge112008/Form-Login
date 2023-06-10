@@ -20,19 +20,19 @@ const { DB_USER, DB_PASS, CONNECTION_URL } = config.mongo;
 
 const app = express(); //Crear una aplicacion express
 
-app.use(cookieParser("C0d3rS3cr3t"));
+app.use(cookieParser("S3cr3tC0d3r"));
 app.use(
   session({
     secret: "S3cr3tC0d3r",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: CONNECTION_URL,
       mongoOptions: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       },
-      ttl: 900, //Segundos que dura la sesion activa (5 minutos)
+      ttl: 600, //Segundos que dura la sesion activa (10 minutos)
     }),
   })
 );

@@ -102,29 +102,9 @@ if (existe != null) {
   ingreso.className = "ref-ingresar"; //ACTIVANDO BOTON INGRESAR.
 }
 
-//REGISTRANDO A UN NUEVO USUARIO
-/*registro.addEventListener("click", (e) => {
-  if (registro.innerText == "REGISTER") {
-    e.preventDefault();
-    checkbox.checked ? guardar("localStorage") : guardar("sessionStorage"); //REGISTRANDO NUEVO USUARIO.
-  } else if (registro.innerText == "NUEVO") {
-    localStorage.removeItem("usuario"); //ELIMINANDO USUARIO ALMACENADO EN LA LOCALSTORAGE.
-  }
-});*/
-
-//INGRESANDO A LA APLICACIÓN
-/*ingreso.addEventListener("click", (event) => {
-  event.preventDefault();
-  const existe = JSON.parse(localStorage.getItem("usuario")); //OBTENIENDO USUARIO DENTRO DE LA LOCALSTORE.
-  const existe2 = JSON.parse(sessionStorage.getItem("usuario")); //OBTENIENDO USUARIO DENTRO DE LA SESSIONSTORE.
-  checkbox.checked ? comprobar(existe.password) : comprobar(existe2.password); //COMPROBANDO CONTRASEÑA DE USUARIO INGRESADO.
-});*/
-
 Login.addEventListener("click", async (e) => {
   e.preventDefault();
   window.location.href = "../login";
-  //const userSet=await setDataCookie(data,cookSafe[0]);
-  // console.log("USUARIO REGISTRADO CON EXITO: Usuario>"+userSet.user +" y Password>"+userSet.password);
 });
 
 async function startSession(data) {
@@ -178,7 +158,6 @@ async function getUser(params) {
       "Access-Control-Allow-Credentials": true,
       mode: "cors",
     });
-    JSON.stringify;
     const data = await response.json();
     return data;
   } catch {
@@ -201,7 +180,7 @@ async function postUser(user) {
     if (response.status == 400) {
       console.warn("Error en el cliente");
       return;
-    } else if (response.status == 200) {
+    } else if (response.status == 201) {
       return response.json();
     }
   } catch {
@@ -231,16 +210,17 @@ form.addEventListener("submit", async (e) => {
       if (result == "Success") {
         postUser(newUser)
           .then(async (data) => {
-            await setDataCookie({ user: data.email, timer: 15000 });
+            setDataCookie({ user: data.email, timer: 300000 }); //Cookie de sesion nueva registrada, duración 5 min.
             setTimeout(() => {
               window.location.href = "../login";
-            }, 1000),
+            }, 1500),
               Swal.fire({
                 position: "center",
                 icon: "info",
                 title: "Successful registration",
                 text: inputMsj,
                 showConfirmButton: false,
+                allowOutsideClick: false,
               });
           })
           .catch((error) => console.log("Error:" + error));

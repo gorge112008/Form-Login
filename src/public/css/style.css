@@ -1653,28 +1653,6 @@
   color: #000000;
 }
 
-.btnLogout{
-  position: absolute;
-  width: fit-content;
-  right: 5px;
-  color: red;
-  border-radius: 2px;
-  border: solid black 1px;
-  background-color: rgb(255, 196, 196);
-  box-shadow: rgb(249, 0, 0) 1px 1px 5px 0px;
-  cursor: pointer;
-  font-family:Verdana, Geneva, Tahoma, sans-serif
-}
-
-.btnLogout:hover,
-.btnLogout:focus {
-  background-color: rgb(254, 86, 86);
-  box-shadow: #e46464 0px 0px 10px 0px;
-  cursor: pointer;
-  color: #000000;
-}
-
-
 .btnTransferCart,
 .btnTransferCart:focus {
   background-color: transparent;
@@ -2074,6 +2052,7 @@
   /*DEVICE CEL STATIC BLOCK*/
 
   /*DEVICE CEL FORM BLOCK*/
+  
   .form__contain div {
     margin: 4px;
   }

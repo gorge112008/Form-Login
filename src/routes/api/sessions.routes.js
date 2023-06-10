@@ -1,62 +1,62 @@
 import { Router } from "express";
-import { UserFM} from "../../dao/Mongo/classes/DBmanager.js";
+import { UserFM } from "../../dao/Mongo/classes/DBmanager.js";
 import auth from "../../middlewares/authMiddleware.js";
 
 const routerSessions = Router();
 
-routerSessions.get("/login", (req, res) => {
-  res.status(200).json("products");
+routerSessions.post("/login", auth, (req, res) => {
+  try {
+    const admin = req.session.admin;
+    const user = req.session.user;
+    const userName = admin ? admin.first_name : user.first_name;
+    const session = req.session;
+    const msj = `WELCOME ${userName.toUpperCase()}`;
+    req.session.counter = 1;
+    res.status(200).json({ success: msj, session: session });
+  } catch (error) {
+    console.error("Not exist any session: " + error);
+  }
 });
 
-routerSessions.post("/login", async (req, res) => {
+routerSessions.post("/signup", async (req, res) => {
+  const newUser = req.body;
   try {
-    let user;
-    admin = res.locals.admin;
-    admin ? (user = admin) : (user = req.body);
-    res.status(200).json({ message: "success", data: user });
+    const response = await UserFM.addUser(newUser);
+    res.status(201).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-routerSessions.post("/signup", async (req, res) => {
-    const { first_name, last_name, email, password, age } = req.body;
-    try {
-      const response = await UserFM.addUser({
-        first_name:first_name,
-        last_name: last_name,
-        email:email,
-        password:password,
-        age:age,
-      });
-      if (response.new===true) {
-        res.status(201).redirect("/login");
-      }else if(response.new===false){
-        res.status(201).redirect("/signup");
-      }
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+routerSessions.get("/session", (req, res) => {
+  try {
+    const session = req.session;
+    if (session.user || session.admin) {
+      const admin = req.session.admin;
+      const user = req.session.user;
+      const userName = admin ? admin.first_name : user.first_name;
+      let msj;
+      req.session.counter++;
+      msj = `WELCOME BACK ${userName.toUpperCase()}, THIS IS YOUR ${
+        req.session.counter
+      } INCOME.`;
+      res.status(200).json({ msj: msj, confirm: true, session: session });
+    } else {
+      res.status(200).json({ confirm: false, session: null });
     }
-  });
-
-routerSessions.post("/session",auth, (req, res) => {
-  if (req.session.counter) {
-    req.session.counter++;
-    const msj = `BIENVENIDO ${req.session.user}`;
-    res.status(200).json({ success: msj});
-  } else {
-    const msj = `BIENVENIDO ${req.session.user}`;
-    req.session.counter = 1;
-    res.status(200).json({success: msj});
-}
+  } catch (error) {
+    console.error("Error reading session " + error);
+  }
 });
 
 routerSessions.get("/logout", (req, res) => {
+  res.clearCookie("connect.sid");
+  res.clearCookie("SessionCookie");
   req.session.destroy((err) => {
     if (err) {
-      res.send("Error al cerrar sesion");
+      res.send("Failed to sign out");
     } else {
-      const msj = `HA FINALIZADO SU SESION CORRECTAMENTE`;
+      const msj = `YOU HAVE ENDED YOUR SESSION SUCCESSFULLY`;
       res.status(200).json(msj);
     }
   });

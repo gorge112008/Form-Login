@@ -3,28 +3,37 @@ import { UserFM } from "../dao/Mongo/classes/DBmanager.js";
 const auth = async (req, res, next) => {
   try {
     const { User, Password } = req.body;
-    console.log("username", User+" password", Password);
     const response = await UserFM.getUserUnique({
       email: User,
       password: Password,
     });
     if (response) {
-      req.session.user = response;
+      const { password, ...newResponse }=response;
       if (
         response.email === "adminCoder@coder.com" &&
         response.password === "adminCod3r123"
+        || response.email === "adminJorge@coder.com" &&
+        response.password === "adminJ0rg3"
       ) {
-        req.session.admin = true;
-        res.locals.admin = response;
+        if (!req.session.admin) {
+          req.session.admin = response;
+          res.locals.admin = newResponse;
+        }
+        res.locals.admin = newResponse;
+      } else if (!req.session.user) {
+          req.session.user = response;
+          res.locals.user = newResponse;
+      }else{
+        res.locals.user = newResponse;
       }
-      return next();
+      next();
     } else {
-      const err={error:"Authentication Error!"}
+      const err = { error: "Authentication Error!" };
       return res.status(400).json(err);
     }
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ err: "Internal Server Error" });
+  } catch (error) {
+    const err= { error: "Internal Server Error" };
+    return res.status(500).json(err);
   }
 };
 

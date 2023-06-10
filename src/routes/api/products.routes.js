@@ -62,9 +62,4 @@ routerProducts.delete("/products/:pid", async (req, res) => {
   }
 });
 
-/****************************************************FINAL ENDPOINTS: GET*************************************************************/
-routerProducts.get("*", function (req, res) {
-  res.status(404).send("The route is incorrect");
-});
-
 export default routerProducts;

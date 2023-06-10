@@ -38,12 +38,9 @@ function actionRoute() {
   const regex = /^\/[^/]+/;
   const routeName = route.match(regex);
 
-  if (routeName == null) {
-  navHeader.classList.add("hidden");
-  asideMLD.classList.add("hidden");
-  asideSD.classList.add("hidden");
+  if (routeName == "/login") {
+    RouteIndex = "login";
   }
-
   if (routeName == "/home") {
     RouteIndex = "home";
     modulesActive();

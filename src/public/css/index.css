@@ -10,7 +10,8 @@
   .index__route--dinamic,
   .index__route--products,
   .index__route--carts,
-  .index__route--chat{
+  .index__route--chat,
+  .index__route--profile{
     height: 10vh;
     display: flex;
     align-items: center;
@@ -120,4 +121,26 @@
     box-shadow: #9966cc 0px 0px 20px 0px;
     cursor: pointer;
   }
+
+  .index__route--profile a {
+    /*CHAT BUTTON*/
+    background-color: rgb(66, 255, 3);
+    color: black;
+    white-space: normal;
+    border: solid black 2px;
+    border-radius: 20px;
+    font-family: "Sinami", sans-serif;
+    font-size: 2.5rem;
+    padding: 15px;
+    padding-bottom: 5px;
+    transition: all 500ms ease;
+  }
+  
+  .index__route--profile a:hover {
+    border: solid black 2px;
+    color: rgb(255, 0, 0);
+    box-shadow: #b60101 0px 0px 20px 0px;
+    cursor: pointer;
+  }
+  
   

@@ -20,12 +20,17 @@ routerCookie.get("/getUserCookie", (req, res) => {
 });
 
 routerCookie.get("/getSessionCookie", (req, res) => {
-  const sessionCookie = req.signedCookies.connect.sid;
+  try {
+    const sessionCookie = req.signedCookies.connect.sid?req.signedCookies.connect.sid:null;
   if (sessionCookie) {
     res.send({ data: sessionCookie});
   }else{
     res.send({ data: ""});
   }
+  } catch (error) {
+    console.error("Error reading session " + error);
+  }
+  
 });
 
 /*****************************************************************POST*************************************************************/

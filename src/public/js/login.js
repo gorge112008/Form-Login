@@ -28,7 +28,10 @@ async function VerificateSession() {
     if (confirm === true) {
       const rol = session.user ? "user" : "admin";
       if (rol === "admin") {
-        sessionStorage.setItem("userSession",JSON.stringify({msj:msj,rol:"admin"}));
+        sessionStorage.setItem(
+          "userSession",
+          JSON.stringify({ msj: msj, rol: "admin" })
+        );
         setTimeout(() => {
           window.location.href = "../products";
         }, 2000),
@@ -41,7 +44,10 @@ async function VerificateSession() {
             allowOutsideClick: false,
           });
       } else if (rol === "user") {
-        sessionStorage.setItem("userSession",JSON.stringify({msj:msj,rol:"user"}));
+        sessionStorage.setItem(
+          "userSession",
+          JSON.stringify({ msj: msj, rol: "user" })
+        );
         setTimeout(() => {
           window.location.href = "../products";
         }, 2000),
@@ -78,6 +84,10 @@ async function startSession(data) {
       const Err = await response.json();
       console.warn(Err.error);
       return { status: 400, sessionData: Err };
+    } else if (response.status == 409) {
+      const Err = await response.json();
+      console.warn(Err.error);
+      return { status: 409, sessionData: Err };
     } else if (response.status == 200) {
       const Data = await response.json();
       return { status: 200, sessionData: Data };
@@ -175,8 +185,11 @@ form.addEventListener("submit", async (e) => {
     const emailSession = userSession.admin
       ? userSession.admin.email
       : userSession.user.email;
-    userSession.admin?role="admin":role="user";
-    sessionStorage.setItem("userSession",JSON.stringify({msj:sessionData.success,rol:role}));
+    userSession.admin ? (role = "admin") : (role = "user");
+    sessionStorage.setItem(
+      "userSession",
+      JSON.stringify({ msj: sessionData.success, rol: role })
+    );
     rememberCheckbox.checked
       ? setDataCookie({ user: emailSession })
       : setDataCookie({ user: emailSession, timer: 10000 });
@@ -185,11 +198,11 @@ form.addEventListener("submit", async (e) => {
     }, 1000),
       Swal.fire({
         position: "center",
-        icon: "info",
+        icon: "success",
         title: "Successful Login",
         text: "Logging in...",
         showConfirmButton: false,
-        allowOutsideClick:false,
+        allowOutsideClick: false,
       });
   } else if (status === 400) {
     Swal.fire({
@@ -205,6 +218,24 @@ form.addEventListener("submit", async (e) => {
         pswCheckbox.setAttribute("checked", "true");
         form.reset();
         inputUser.value = userData.User;
+      } else if (result.isDenied) {
+        window.location.href = "../signup";
+      }
+    });
+  } else if (status === 409) {
+    Swal.fire({
+      title: sessionData.error,
+      text: "Active Session Found",
+      icon: "error",
+      showDenyButton: true,
+      confirmButtonText: "Sign in with another account",
+      denyButtonText: "Register with another account",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        userCheckbox.setAttribute("checked", "true");
+        pswCheckbox.setAttribute("checked", "true");
+        form.reset();
+        inputUser.value = "";
       } else if (result.isDenied) {
         window.location.href = "../signup";
       }

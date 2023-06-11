@@ -59,7 +59,7 @@ async function VerificateSession(ActiveSession) {
     if (rol == "admin") {
       Swal.fire({
         position: "center",
-        icon: "info",
+        icon: "success",
         title: "ADMIN SESSION ACTIVE",
         text: msj,
         showConfirmButton: true,
@@ -68,7 +68,7 @@ async function VerificateSession(ActiveSession) {
     } else if (rol == "user") {
       Swal.fire({
         position: "center",
-        icon: "info",
+        icon: "success",
         title: "USER SESSION ACTIVE",
         text: msj,
         showConfirmButton: true,

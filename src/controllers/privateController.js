@@ -1,4 +1,4 @@
-let privateProducts, privateMessages, privateCarts, sessionActive;
+let privateProducts, privateMessages, privateCarts;
 
 const privateController = {
   profile: (req, res) => {
@@ -9,15 +9,18 @@ const privateController = {
   },
   realtimeproducts: (req, res) => {
     const { rol, email } = res.locals.resUser;
-    sessionActive=res.locals.activeSessions;
     privateProducts = res.locals.resProducts;
-    res.render("private/realtimeProducts", {
-      rol: rol,
-      user: email,
-      body: privateProducts,
-    });
+    if (rol == "ADMIN") {
+      res.render("private/realtimeProducts", {
+        rol: rol,
+        user: email,
+        body: privateProducts,
+      });
+    } else if (rol == "USER") {
+      res.render("private/noAdmin", { isLogin: true });
+    }
   },
 };
 
 export default privateController;
-export { privateProducts, privateMessages, privateCarts, sessionActive };
+export { privateProducts, privateMessages, privateCarts };

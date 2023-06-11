@@ -203,7 +203,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: start;
   height: auto;
   width: fit-content;
   cursor: pointer;
@@ -299,6 +299,24 @@
   .login__form__profile {
     height: 13vh;
     width: 13vh;
+  }
+  .login__inputBox {
+    flex-direction: column-reverse;
+    height: fit-content;
+  }
+  .btnSignUp{
+    position: relative;
+    border-radius: 5px;
+    width: 47vw;
+    height: 5vh;
+  }
+  
+  .btnLogin {
+    position: relative;
+    margin: auto;
+    width: 47vw;
+    height: 5vh;
+    margin-bottom: 20px;
   }
 }
 /*CSS DEVICE > 992px (62rem) (base 16px=1rem) (LAP)*/

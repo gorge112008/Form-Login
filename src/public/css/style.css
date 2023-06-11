@@ -102,7 +102,7 @@
   grid-auto-rows: 1fr;
   grid-auto-columns: 1fr;
   grid-gap: 10px;
-  height: 65vh;
+  height: auto;
   overflow: auto;
   margin: 0.5vh 0;
   overflow-x: hidden;
@@ -213,7 +213,7 @@
   height: 85%;
   width: 6vw;
   border-radius: 10px;
-  text-align: center;
+  text-align: start;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -533,7 +533,8 @@
   margin-bottom: 10px;
 }
 .asideSD__dropdown--button,.asideSD__dropdown--button:focus {
-  background-color: #bffcc6;
+  background-color: transparent;
+  color:green;
   font-size: 2rem;
   position: relative;
   height: 7vh;
@@ -544,7 +545,7 @@
 }
 
 .asideSD__dropdown a {
-  background-color: #bffcc6;
+  background-color: transparent;
   border: solid 2px black;
   color: black;
   font-size: 2rem;
@@ -559,11 +560,10 @@
   z-index: 4;
 }
 .asideSD__dropdown b {
-  font-family: "Times New Roman", Times, serif;
   font-size: 1.1rem;
   font-weight: bolder;
-  color: rgb(255, 0, 0);
-  filter: drop-shadow(0 0 10px #ff1100);
+  color: rgb(0, 100, 95);
+  filter: drop-shadow(0 0 10px #06fbff);
 }
 
 .asideSD__dropdown--contain a.active {
@@ -641,6 +641,8 @@
   padding: 0;
   position: relative;
   left: 10px;
+  height: 65vh;
+  overflow: hidden;
 }
 
 .dinamico {
@@ -780,20 +782,19 @@
   cursor: pointer;
 }
 
-/*STATIC BLOCK*/
+/*STATIC TITLE BLOCK*/
 .static__tittle {
-  background-color: transparent;
-  position: sticky;
-  top: 6vh;
+  position: relative;
   display: block;
   z-index: 2;
+  text-align: start;
+  height: 5vh;
 }
 
-.static__tittle h4 {
+.static__tittle p {
   margin: 0;
-  padding-top: 1vh;
   position: static;
-  font-size: 2.875rem;
+  font-size: 2rem;
   font-family: "Sinami", sans-serif;
 }
 
@@ -801,19 +802,33 @@
   background-color: transparent;
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: start;
-  height: 9vh;
+  height: 6vh;
+  width: 100%;
   z-index: 2;
 }
 
-.static__tittleCart h5 {
+.static__tittleCart p{
   margin: 0;
-  padding-top: 1vh;
   position: relative;
   display: flex;
-  font-size: 2.1rem;
+  font-size: 2rem;
   font-family: "Sinami", sans-serif;
+}
+
+.static__container--header{
+  position: sticky;
+  top: 6vh;
+  height: fit-content;
+  overflow: hidden;
+}
+
+.cart__container--header{
+  position: sticky;
+  top: 6vh;
+  height: fit-content;
+  overflow: hidden;
 }
 
 .static__container--grid {
@@ -838,38 +853,55 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: end;
-  height: 9vh;
+  justify-content: center;
+  height:6vh;
   margin: 0;
 }
 
-/*DINAMIC NAV BLOCK*/
-.dinav__container--filters {
+/*DINAMIC CONTAIN NAV FILTERS*/
+.dinav__container{
   display: flex;
-  justify-content: flex-start;
-  display: block;
-  height: auto;
-}
-
-.dinav__container--order {
-  position: sticky;
-  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
-  top: 0;
-  background-color: white;
-  z-index: 2;
-  box-shadow: none;
-  transition: all 500ms;
 }
 
-.dinav__container--option {
-  position: sticky;
+.dinav__container--order,.dinav__container--option  {
+  position: relative;
   display: flex;
-  top: 0;
-  background-color: white;
+  align-items: center;
+  justify-content: start;
+  flex-direction: row;
+  background-color: transparent;
   z-index: 2;
   box-shadow: none;
   transition: all 500ms;
+  height: fit-content;
+  width: 100%;
+}
+
+.dinav__titleOrder, .dinav__titleFilter{
+  position: relative;
+  display: block;
+  width: 20%;
+  margin: 0;
+}
+
+.dinav__Order{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  margin: 0;
+  width:80%;
+}
+.dinav__filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  margin: 0;
+  width: 40%;
 }
 
 .dinav__container--order:hover,
@@ -882,33 +914,37 @@
 .dinav__filter--label {
   font-size: 1rem;
   color: black;
-  display: flex;
-  height: auto;
   font-weight: bold;
   line-height: 25px;
-  padding-left: 5px;
   overflow: hidden;
   white-space: nowrap;
 }
 
-.dinav__order--select {
+.dinav__order--select, .dinav__filter--select {
+  border: solid black 1px;
   padding: 5px;
+  margin-bottom: 4px;
+  margin-left: 2px;
   padding-left: 25px;
-  height: 30px;
+  height: fit-content;
   width: 100%;
-  display: flex;
+  display: block;
   cursor: pointer;
   appearance: none;
-  background: #39ff9c;
+  background-color: #39ff9c;
   font-family: "Quicksand", sans-serif;
-  border: 2px solid rgba(2, 101, 35, 0.686);
   border-radius: 12px;
   position: relative;
   transition: all 0.25s ease;
+  background-image: url(../assets/icons/arrow.ico);
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: left;
+  padding-right: 20px;
 }
 
-.dinav__order--select:hover {
-  background: #43ff66;
+.dinav__order--select:hover, .dinav__filter--select:hover  {
+  background-color: #43ff66;
 }
 
 .dinav__option:focus {
@@ -916,27 +952,11 @@
   background-color: none;
 }
 
-.arrowSelect {
-  display: block;
-  border-left: 4px double #000000;
-  border-bottom: 4px double #000000;
-  transform: rotate(-45deg); /* Giramos el cuadrado */
-  transition: all 0.25s ease;
-  width: 1.3vh;
-  height: 1.3vh;
-  position: relative;
-  top: -21px;
-  left: 10px;
-}
-
-.dinav__filter {
-  width: 100%;
-}
-
 .dinav--option:checked {
   display: none;
 }
 
+/*DINAMIC CONTAIN PAGES*/
 .dinav__container--pages {
   background: none;
   box-shadow: none;
@@ -1523,7 +1543,6 @@
 
 .btnExitCart {
   width: 100%;
-  height: 50%;
   position: relative;
   padding-bottom: 3px;
   background: rgb(21, 3, 123);
@@ -1989,19 +2008,9 @@
 
 @media only screen and (max-width: 37.5rem) {
   /*DEVICE CEL MAIN BLOCK*/
-  .dinamic__container--addProduct {
-    display: block;
-    position: relative;
-    left: 0;
-  }
-
   .inactiveAdd {
-    display: none;
+    display: none !important;
     position: absolute;
-  }
-
-  .dinamic__container--listProduct {
-    position: relative;
   }
 
   .container__grid {
@@ -2044,12 +2053,20 @@
   }
 
   /*DEVICE CEL DINAMIC BLOCK*/
-  .dinamic__container--addProduct h3 {
-    font-size: 3em;
-    width: 100%;
+  .dinamic__container--addProduct {
+    display: block;
+    position: relative;
+    left: 0;
+  }
+
+  .dinamic__container--listProduct {
+    position: relative;
   }
 
   /*DEVICE CEL STATIC BLOCK*/
+  .static__container--grid {
+    height: 67vh;
+  }
 
   /*DEVICE CEL FORM BLOCK*/
   
@@ -2283,3 +2300,4 @@
   text-align: center;
   cursor: progress;
 }
+

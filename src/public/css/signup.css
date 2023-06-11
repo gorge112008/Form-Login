@@ -138,6 +138,7 @@
   width: 30vw;
   border: none;
   border-bottom: solid rgb(0, 0, 0) 3px;
+
 }
 
 .signup--input:invalid {
@@ -194,14 +195,14 @@
   display: block;
   margin: auto;
   right: 0;
-  top: 0;
+  top: 15px;
   bottom: 0;
   background-color: rgb(184, 246, 242);
   cursor: pointer;
   border: solid aqua 2px;
   border-radius: 5px;
-  width: 40%;
-  height: 80%;
+  width: 45%;
+  height: 100%;
 }
 
 .btnSignUp:hover {
@@ -211,7 +212,7 @@
 
 .btnSignUp b {
   font-family: "Times New Roman", Times, serif;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: purple;
 }
 
@@ -220,14 +221,14 @@
   display: block;
   margin: auto;
   left: 0;
-  top: 0;
+  top: 15px;
   bottom: 0;
   border: solid rgb(184, 178, 178) 2px;
   border-radius: 5px;
   background-color: rgb(227, 227, 227);
   cursor: pointer;
-  width: 40%;
-  height: 80%;
+  width: 45%;
+  height: 100%;
 }
 
 .btnLogin:hover{
@@ -237,7 +238,7 @@
 
 .btnLogin b {
   font-family: "Times New Roman", Times, serif;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: green;
 }
 
@@ -261,7 +262,7 @@
 
   .signup__form--contain {
     width: 80%;
-    height: 75%;
+    height: 85%;
   }
 
   .signup__form--contain li {
@@ -280,6 +281,31 @@
   .RevealPsw{
     right: 20px;
     bottom: 8px;
+  }
+  .signup__inputBox {
+    flex-direction: column-reverse;
+    height: fit-content;
+  }
+
+  .btnSignUp{
+    position: relative;
+    width: 55vw;
+    height: 5vh;
+    margin: 10px 0;
+  }
+  
+  .btnSignUp b{
+    font-size: 1rem;
+  }
+
+  .btnLogin {
+    position: relative;
+    width: 55vw;
+    height: 5vh;
+  }
+
+  .btnLogin b{
+    font-size: 1rem;
   }
   
 }

@@ -56,7 +56,7 @@ async function createListCarts(idCart) {
 
 async function createHTMLCarts() {
   if (storeCarts.length == 0) {
-    titleCart.innerHTML = `<h5>Carts (${storeCarts.length}):</h5>`;
+    titleCart.innerHTML = `<p>Carts (${storeCarts.length}):</p>`;
     containCart.innerHTML = `<div class="container__empty__card">
             <div class="card">
               <div class="card-item--empty">
@@ -142,7 +142,7 @@ async function createHTMLCarts() {
         </div>`;
       containCart.innerHTML += html;
     }
-    titleCart.innerHTML = `<h5>Carts (${storeCarts.length}):</h5>`;
+    titleCart.innerHTML = `<p>Carts (${storeCarts.length}):</p>`;
     btnTransferCart = document.querySelectorAll(".btnTransferCart");
     btnRemoveCart = document.querySelectorAll(".btnRemoveCart");
     return [btnRemoveCart, btnTransferCart];
@@ -151,7 +151,7 @@ async function createHTMLCarts() {
 
 async function crearHTMLProductsCarts() {
   if (storeProducts.length == 0) {
-    titleCart.innerHTML = `<h5>Cart Empty</h5>`;
+    titleCart.innerHTML = `<p>Cart Empty</p>`;
     containCart.innerHTML = "";
     containCart.innerHTML = `<div class="container__empty__card">
         <div class="card">
@@ -242,7 +242,7 @@ async function crearHTMLProductsCarts() {
       "static__container--grid"
     );
     btnClearCart.classList.remove("hidden");
-    titleCart.innerHTML = `<h5>Products Cart (${count}):</h5>`;
+    titleCart.innerHTML = `<p>Products Cart (${count}):</p>`;
     bnUpdateAdd = document.querySelectorAll(".btnUpdate--Max");
     btnUpdateDel = document.querySelectorAll(".btnUpdate--Min");
     btnAllDel = document.querySelectorAll(".card__btnDelete");

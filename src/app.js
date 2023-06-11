@@ -32,7 +32,7 @@ app.use(
         useNewUrlParser: true,
         useUnifiedTopology: true,
       },
-      ttl: 600, //Segundos que dura la sesion activa (10 minutos)
+      ttl: 600, //Segundos que dura la sesion activa (10 minutos).
     }),
   })
 );

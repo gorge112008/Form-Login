@@ -3,7 +3,7 @@
 /*ALL*/
 let RouteIndex = "";
 const navHeader = document.querySelector(".header__nav"),
-  navFilters = document.querySelector(".dinav__container--filters"),
+  navFilters = document.querySelector(".static__container--header"),
   navPages = document.querySelector(".dinav__container--pages"),
   formAddProduct = document.querySelector(".dinamic__container--addProduct"),
   listProduct = document.querySelector(".dinamic__container--listProduct"),
@@ -51,19 +51,19 @@ function actionRoute() {
     single == 1 ? (RouteIndex = "realTP/") : (RouteIndex = "realTP");
     mldasideAddProduct.classList.remove("hidden");
     sdasideAddProduct.classList.remove("hidden");
-    modulesActive();
+    single == 0 && modulesActive();
   }
 
   if (routeName == "/products") {
     const single = validID(route);
     single == 1 ? (RouteIndex = "productP/") : (RouteIndex = "productP");
-    modulesActive();
+    single == 0 && modulesActive();
   }
 
   if (routeName == "/cart") {
     const single = validID(route);
     single == 1 ? (RouteIndex = "cartP/") : (RouteIndex = "cartP");
-    modulesActive();
+    single == 0 && modulesActive();
   }
 
   if (routeName == "/chat") {

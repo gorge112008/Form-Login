@@ -8,7 +8,7 @@ import privateController from "../controllers/privateController.js";
 
 const routerViews = Router();
 
-routerViews.get("/", validateSession,  publicController.index);
+routerViews.get("/", publicController.login);
 
 routerViews.get("/login", publicController.login);
 

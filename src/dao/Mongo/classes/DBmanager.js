@@ -18,8 +18,10 @@ class ProductFileManager {
 
   async getProductId(id) {
     try {
-      const product = await productsModel.find({ _id: id });
-      return product;
+      const newProduct=[];
+      const product = await productsModel.findOne({ _id: id });
+      newProduct.push(product);
+      return newProduct;
     } catch (err) {
       throw err;
     }

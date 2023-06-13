@@ -14,7 +14,7 @@ let querySelect;
 let query = {};
 
 const contain = document.querySelector(".container__grid"),
-  tittleDinamic = document.querySelector(".dinamic__tittle--h3"),
+  tittleDinamic = document.querySelector(".dinamic__tittle--addProduct"),
   form = document.querySelector("form"),
   formInput = document.querySelectorAll(".input-field label"),
   formCancel = document.querySelector(".form--btnCancel");
@@ -168,7 +168,7 @@ async function selectAction() {
       label.focus();
     });
     if (opc == "static") {
-      updateData(storeProducts[0]._id, { status: "error" });
+      await updateData(storeProducts[0]._id, { status: "error" });
       socket.emit(
         "updatingProduct",
         storeProducts[0].tittle + " updating..."
@@ -199,9 +199,9 @@ async function selectDelete() {
             showCancelButton: false,
             confirmButtonText: "YES",
             denyButtonText: "NOT",
-          }).then((result) => {
+          }).then(async(result) => {
             if (result.isConfirmed) {
-              deleteData(selectBtn.id)
+              await deleteData(selectBtn.id)
                 .then(async (data) => {
                   Swal.fire({
                     title: "Product Removed Successfully!!!",
@@ -232,6 +232,7 @@ async function selectDelete() {
           formAddProduct.className ==
           "dinamic__container--addProduct inactiveAdd"
         ) {
+          
           formAddProduct.classList.remove("inactiveAdd");
           listProduct.classList.remove("m12");
           listProduct.classList.add("m7");
@@ -524,8 +525,8 @@ async function deleteData(id) {
 /*FIN FUNCIONES CRUD*/
 
 /*****************************************************************SOCKETS*************************************************************/
-socket.on("callProducts", async (getProducts) => {
-  Object.assign(storeProducts, getProducts); //ASIGNAR PRODUCTOS AL STORE
+socket.on("callProductsPrivate", async (getProducts) => {
+  Object.assign(storeProducts, getProducts);
   if (storeProducts.length == 1) {
     sessionStorage.setItem("productUpdate", storeProducts[0]._id);
     if (RouteIndex === "realTP") {
@@ -609,6 +610,28 @@ socket.on("viewingProduct", async (id) => {
   }
 });
 
+socket.on("viewingCloseProduct", async (id) => {
+  if (RouteIndex === "realTP/") {
+    validateProducts.classList.remove("hidden");
+    let productView = await getDatabyID(storeProducts[0]._id);
+    storeProducts = productView;
+    selectAction();
+    const btnDel = document.querySelector(".card__btnDelete");
+    btnDel.classList.remove("hidden");
+  } else {
+    let int = -1;
+    let btnDel = [];
+    selectAction();
+    btnDel = document.querySelectorAll(".card__btnDelete");
+    for (const product of storeProducts) {
+      int++;
+      if (product._id == id) {
+        btnDel[int].classList.remove("hidden");
+      }
+    }
+  }
+});
+
 socket.on("orderExonerate", async (msj) => {
   console.log(msj);
   if (RouteIndex === "realTP/") {
@@ -672,9 +695,9 @@ validateProducts.onclick = async () => {
   }
 };
 
-formCancel.onclick = () => {
+formCancel.onclick =async () => {
   if (RouteIndex === "realTP/") {
-    updateData(storeProducts[0]._id, { status: "success" });
+    await updateData(storeProducts[0]._id, { status: "success" });
     opc = "static";
     socket.emit("updateproduct", "Updated Products");
     window.location.href = "../realtimeproducts";
@@ -691,17 +714,17 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const product = new NewProduct();
   validateProduct(product)
-    .then((response) => {
+    .then(async(response) => {
       [result, inputError] = response;
       if (result == "Success") {
         if (RouteIndex === "realTP/") {
-          updateData(storeProducts[0]._id, product)
+          await updateData(storeProducts[0]._id, product)
             .then((data) => {
               saveUpdate(data);
             })
             .catch((error) => console.log("Error:" + error));
         } else if (RouteIndex === "realTP") {
-          postData(product)
+          await postData(product)
             .then(async (data) => {
               storeProducts = await getData();
               filters();

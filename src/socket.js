@@ -7,8 +7,6 @@ import {
 
 import {
   privateProducts,
-  privateMessages,
-  privateCarts,
 } from "./controllers/privateController.js";
 
 async function initSocketServer(server) {
@@ -16,15 +14,10 @@ async function initSocketServer(server) {
 
   io.on("connection", (socket) => {
     console.log("New client connected");
-    publicMessages
-      ? socket.emit("backMessages", publicMessages)
-      : socket.emit("backMessages", privateMessages);
-    publicProducts
-      ? socket.emit("callProducts", publicProducts)
-      : socket.emit("callProducts", privateProducts);
-    publicCarts
-      ? socket.emit("callCarts", publicCarts)
-      : socket.emit("callCarts", privateCarts);
+    socket.emit("backMessages", publicMessages)
+    socket.emit("callProductsPublic", publicProducts); 
+    socket.emit("callProductsPrivate", privateProducts); 
+    socket.emit("callCarts", publicCarts);
 
     socket.on("addproduct", async (newProduct) => {
       socket.broadcast.emit("f5NewProduct", newProduct);
@@ -48,6 +41,9 @@ async function initSocketServer(server) {
 
     socket.on("viewingProduct", async (id) => {
       io.emit("viewingProduct", id);
+    });
+    socket.on("viewingCloseProduct", async (id) => {
+      socket.broadcast.emit("viewingCloseProduct", id);
     });
 
     socket.on("addingProductCart", async (msj) => {

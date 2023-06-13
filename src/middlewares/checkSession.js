@@ -20,7 +20,7 @@ const checkSession = async (req, res, next) => {
         (session) => session.user.email == response.email
       );
       if (activeAdminSessions.length > 0 || activeUserSessions.length > 0) {
-        const err = { error: "The mail already has the active session. Please try again later." };
+        const err = { error: "The mail already has the active session. Please try again later (10 min max.)" };
         return res.status(409).json(err);
       }else{
         next();

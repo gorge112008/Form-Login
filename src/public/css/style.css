@@ -78,7 +78,7 @@
 }
 
 .input-field {
-  margin: 7px;
+  margin-top: 10px !important;
 }
 
 .input-field select {
@@ -193,7 +193,7 @@
   height: 6vh;
   margin: 0;
   text-align: center;
-  font-family: "Love You", cursive;
+  font-family: 'Times New Roman', Times, serif;
   font-size: 3rem;
   overflow: hidden;
   white-space: nowrap;
@@ -361,9 +361,8 @@
   z-index: 1;
 }
 
-.asideMLD__menu--addProduct button {
-  font-family: "Sinami", sans-serif;
-  font-size: 2.8vh;
+.btnAsideMLD,.btnAsideMLD:focus{
+  font-size: 1.5rem;
   width: 90%;
   border-radius: 15px;
   color: rgb(4, 167, 4);
@@ -371,22 +370,20 @@
   box-shadow: #9ce3fa 0px 0px 10px 0px;
   border: none;
   border-bottom: solid red 2px;
-  height: fit-content;
+  height: 8vh;
   z-index: 1;
 }
 
-.asideMLD__menu--addProduct button:hover {
+.btnAsideMLD:hover {
   box-shadow: #00bfff 0px 0px 10px 0px;
   cursor: pointer;
   color: #02e30e;
 }
 
-.asideMLD__menu--addProduct i {
-  display: inline-block;
-  height: 0;
-  font-size: 2.5vh;
-  position: relative;
-  margin-right: 4px;
+.btnAsideMLD p {
+  display: inline;
+  margin-left: 4px;
+  font-family: "Sinami", sans-serif;
 }
 
 .asideMLD__menu--options {
@@ -423,7 +420,7 @@
 
 .asideMLD__menu--options button:hover {
   background-color: rgb(67, 223, 80);
-  border: solid black 1px;
+  outline: solid black 1px;
   cursor: pointer;
   border-radius: 3px;
 }
@@ -519,10 +516,12 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  text-align: center;
   height: 10vh;
   width: 10vh;
   margin-bottom: 10px;
 }
+
 .asideSD__dropdown--contain {
   display: flex;
   align-items: center;
@@ -533,15 +532,18 @@
   margin-bottom: 10px;
 }
 .asideSD__dropdown--button,.asideSD__dropdown--button:focus {
-  background-color: transparent;
-  color:green;
-  font-size: 2rem;
+  font-size: 1.2rem;
   position: relative;
   height: 7vh;
   width: 12vw;
   border-radius: 15px;
   font-weight: bolder;
   z-index: 4;
+  color: rgb(4, 167, 4);
+  background-color: transparent;
+  box-shadow: #9ce3fa 0px 0px 10px 0px;
+  border: none;
+  border-bottom: solid red 2px;
 }
 
 .asideSD__dropdown a {
@@ -631,6 +633,7 @@
   z-index: 0;
   position: sticky;
   top: 6vh;
+
 }
 
 /*DINAMIC BLOCK*/
@@ -652,7 +655,6 @@
 
 .dinamic__container--addProduct {
   position: relative;
-  left: 0;
 }
 
 .inactiveAdd {
@@ -665,13 +667,13 @@
   padding: 0;
 }
 
-.dinamic__tittle--h3 {
+.dinamic__tittle--addProduct {
   position: sticky;
   margin: 0;
   top: 0;
   display: block;
   margin-left: 10px;
-  font-size: 3.375rem;
+  font-size: 2.5rem;
   width: 100%;
   font-family: "Sinami", sans-serif;
 }
@@ -817,13 +819,6 @@
   font-family: "Sinami", sans-serif;
 }
 
-.static__container--header{
-  position: sticky;
-  top: 6vh;
-  height: fit-content;
-  overflow: hidden;
-}
-
 .cart__container--header{
   position: sticky;
   top: 6vh;
@@ -926,7 +921,7 @@
   margin-bottom: 4px;
   margin-left: 2px;
   padding-left: 25px;
-  height: fit-content;
+  height: 3.7vh;
   width: 100%;
   display: block;
   cursor: pointer;
@@ -1766,18 +1761,17 @@
   left: 0;
   background-color: rgb(61, 2, 179);
   box-shadow: #9966cc 0px 0px 20px 0px;
-  transition: all 600ms ease;
+  transition: all 900ms ease-in-out;
   z-index: 100;
   border-radius: 10px;
   margin: 5px;
-  width: 9vw;
+  width: 6vh;
   display: flex;
   align-items: center;
 }
 
 #return:hover {
   color: rgb(38, 2, 108);
-  width: 30vw;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -1791,24 +1785,14 @@
   height: 5vh;
   width: 100%;
   border-radius: 10px;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
   justify-content: center;
-  overflow: hidden;
-  white-space: nowrap;
-  align-items: start;
-  text-overflow: ellipsis;
+  text-align: center;
 }
 
 #return a:hover {
   color: #fbfe56;
   background-color: rgb(75, 2, 220);
   box-shadow: #9966cc 0px 0px 20px 0px;
-}
-
-#return b {
-  font-family: "thirty-seven", sans-serif;
 }
 
 #return i {
@@ -2054,24 +2038,23 @@
 
   /*DEVICE CEL DINAMIC BLOCK*/
   .dinamic__container--addProduct {
+    height:100%;
     display: block;
-    position: relative;
+    position: absolute;
     left: 0;
+    background: linear-gradient(white, rgb(190, 240, 255));
+    width: 100%;
+    z-index: 2;
   }
 
   .dinamic__container--listProduct {
-    position: relative;
+    position: sticky;
+    top: 6vh;
   }
 
   /*DEVICE CEL STATIC BLOCK*/
   .static__container--grid {
     height: 67vh;
-  }
-
-  /*DEVICE CEL FORM BLOCK*/
-  
-  .form__contain div {
-    margin: 4px;
   }
 
   /*DEVICE CEL CART BLOCK*/
@@ -2144,10 +2127,6 @@
   }
 
   /*DEVICE LAP ASIDE BLOCK*/
-  .asideMLD__menu--addProduct button {
-    font-size: 4vh;
-  }
-
   .asideMLD__menu--options h6 {
     font-size: 3vh;
   }

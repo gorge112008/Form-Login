@@ -1,4 +1,4 @@
-let privateProducts, privateMessages, privateCarts;
+let privateProducts;
 
 const privateController = {
   profile: (req, res) => {
@@ -23,4 +23,4 @@ const privateController = {
 };
 
 export default privateController;
-export { privateProducts, privateMessages, privateCarts };
+export { privateProducts};

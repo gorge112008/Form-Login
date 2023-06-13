@@ -588,7 +588,7 @@ async function addtoCart(id) {
 
 /*****************************************************************SOCKETS*************************************************************/
 
-socket.on("callProducts", async (getProducts) => {
+socket.on("callProductsPublic", async (getProducts) => {
   Object.assign(storeProducts, getProducts); //ASIGNAR PRODUCTOS AL STORE
   sessionStorage.removeItem("values");
   if (storeProducts.length == 1) {
@@ -637,6 +637,8 @@ socket.on("f5updateProduct", async (updatedMsj) => {
     let productUpdate = await getDatabyID(storeProducts[0]._id);
     storeProducts = productUpdate;
     selectAction();
+    const btnDel = document.querySelector(".card__btnDelete");
+    btnDel.classList.remove("hidden");
   } else {
     storeProducts = await getData({});
     filters();
@@ -730,6 +732,8 @@ validateProducts.onclick = async () => {
 };
 
 btnviewClose.onclick = () => {
+  const idProduct = sessionStorage.getItem("productView");
+  socket.emit("viewingCloseProduct", idProduct);
   window.location.href = "../products";
 };
 

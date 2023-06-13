@@ -9,7 +9,7 @@ let opc = "static";
 let btnsDelete;
 let storeProducts = [],
   resExo = [];
-let options;
+let options; 
 let dataPagination;
 let query = {};
 
@@ -176,7 +176,7 @@ async function pagination() {
   }
 }
 
-async function focusbtn() {
+async function focusAction() {
   const buttonsMax = document.querySelectorAll(".div__container--focusBtn a");
   const buttonsMin = document.querySelectorAll(".asideSD__dropdown--contain a");
   buttonsMax.forEach((button) => {
@@ -226,10 +226,10 @@ async function getDatabyID(id) {
 
 /*****************************************************************SOCKETS*************************************************************/
 
-socket.on("callProducts", async (getProducts) => {
+socket.on("callProductsPublic", async (getProducts) => {
   Object.assign(storeProducts, getProducts); //ASIGNAR PRODUCTOS AL STORE
   sessionStorage.removeItem("values");
-  focusbtn();
+  focusAction();
   filters();
 });
 

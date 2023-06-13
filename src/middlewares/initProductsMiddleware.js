@@ -4,6 +4,7 @@ import axios from "axios";
 const middlewareInitProducts = async (req, res, next) => {
   try {
     const Url = `${req.protocol}://${req.hostname}:${config.mongo.port}`;
+
     const route = req.params.pid
       ? `/api/products/${req.params.pid}`
       : `/api/products`;

@@ -13,6 +13,8 @@ const auth = async (req, res, next) => {
           response.password === "adminCod3r123"
           || response.email === "adminJorge@coder.com" &&
           response.password === "adminJ0rg3"
+          || response.email === "adminAlhena@coder.com" &&
+          response.password === "adminAlh3n@"
         ) {
           if (!req.session.admin) {
             req.session.admin = response;

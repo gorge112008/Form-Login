@@ -1,60 +1,62 @@
 <div class="main__container--side col s2"></div>
 <div class="main__container__dinamic col s9">
   <div class="dinamic__container--addProduct inactiveAdd">
-    <div class="col s12 m5 l5">
+    <div class="Hola noMargin col s12 m5 l5">
       <div class="dinamic__tittle row">
-        <h3 class="dinamic__tittle--h3">
-          Enter a product
-        </h3>
+        <div class="nav__dinamic col s12">
+        <b>Let's be superheroes by providing good service!!!</b>
+      </div>
+        <p class="dinamic__tittle--addProduct">
+          Add a product
+        </p>
       </div>
       <div class="form row">
         <form method="POST" action="#" name="form" class="col s12">
-          <div class="form__contain row">
-            <div class="input-field">
-              <select
-                id="selectCategory"
-                name="select"
-                class="dinav__order--select"
-              >
-                <option class="dinav--option" value="Food">Category: Food</option>
-                <option class="dinav--option" value="Drink">Category: Drink</option>
-                <option class="dinav--option" value="Other">Category: Other</option>
-              </select>
-              <i class="arrowSelect"></i>
-            </div>
+          <nav class="dinav__container--order col s12">
+          <div class="dinav__order">
+            <select
+              id="selectCategory"
+              name="select"
+              class="dinav__order--select"
+            >
+              <option class="dinav--option" value="Food">Category: Food</option>
+              <option class="dinav--option" value="Drink">Category: Drink</option>
+              <option class="dinav--option" value="Other">Category: Other</option>
+            </select>
           </div>
+          </nav>
           <div class="form__contain row">
-            <div class="input-field col s10">
+            <div class="input-field col s8 m10 l8 offset-s1 offset-l1">
               <input id="tittle" type="text" class="validate" required />
               <label for="tittle">Tittle</label>
             </div>
           </div>
           <div class="form__contain row">
-            <div class="input-field col s12">
+            <div class="input-field col s10 m12 l10 offset-s1 offset-l1">
               <input id="description" type="text" class="validate" required />
               <label for="description">Description</label>
             </div>
           </div>
           <div class="form__contain row">
-            <div class="input-field col s12">
+            <div class="input-field col s10 m12 l10 offset-s1 offset-l1">
               <input id="code" type="number" class="validate" required />
               <label for="code">Code</label>
             </div>
           </div>
           <div class="form__contain row">
-            <div class="input-field col s12">
+            <div class="input-field col s10 m12 l10 offset-s1 offset-l1">
               <input id="price" type="number" class="validate" required />
               <label for="price">Price</label>
             </div>
           </div>
           <div class="form__contain row">
-            <div class="input-field col s12">
+            <div class="input-field col s10 m12 l10 offset-s1 offset-l1">
               <input id="stock" type="number" class="validate" required />
               <label for="stock">Stock</label>
             </div>
           </div>
           <div class="form__contain row">
-            <div class="input-field col s12">
+            <div class="input-field col s10 m12 l10 offset-s1 offset-l1">
               <label for="thumbnail">Thumbnail</label>
               <input id="thumbnail" type="text" class="validate" />
             </div>
@@ -62,14 +64,14 @@
           <input
             type="submit"
             id="btnSave"
-            class="form--btnSave col s5"
+            class="form--btnSave col s4 m5 l4 offset-s1 offset-l1"
             value="Save"
           />
           <label class="col s2"></label>
           <input
             type="button"
             id="btnCancel"
-            class="form--btnCancel col s5"
+            class="form--btnCancel col s4 m5 l4"
             value="Cancel"
           />
         </form>
@@ -135,6 +137,11 @@
     <div class="dinamic__container--grid row noMargin">
       <div class="container__grid col m12">
         <!--dinamic content-->
+        <div class="loading">
+          <b>
+            LOADING PRODUCTS...
+          </b>
+        </div>
       </div>
     </div>
     <div class="row noMargin">
@@ -153,7 +160,7 @@
 <div class="main__container--side col s1"></div>
 <div id="return"><a href="/login" type="button"><i
       class="fas fa-light fa-reply-all"
-    ></i><b>RETURN</b></a></div>
+    ></i></a></div>
 <button type="button" id="validate">VALIDATE</button>
 <!-- Compiled and minified JavaScript -->
 <script
@@ -164,4 +171,4 @@
 ></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
-<script src="/js/home.js"></script>
+<script src="/js/realtimeproducts.js"></script>

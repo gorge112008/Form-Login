@@ -19,7 +19,7 @@ routerProducts.get("/products/:pid", async (req, res) => {
   try {
     const pid = req.params.pid;
     let product = await ProductFM.getProductId(pid);
-    res.status(200).send(product);
+    res.status(200).json(product);
   } catch (err) {
     res.status(500).json({ error: err });
   }

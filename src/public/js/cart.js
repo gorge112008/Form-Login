@@ -1,5 +1,5 @@
 const socket = io();
-let URLorigin=window.location.origin;
+let URLorigin = window.location.origin;
 let UrlP = URLorigin + "/api/products";
 let UrlC = URLorigin + "/api/carts";
 let opc = "static";
@@ -805,6 +805,17 @@ async function selectRemoveCart() {
   }
 }
 
+async function reloadData() {
+  if (RouteIndex === "cartP/") {
+    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
+    selectBtnCartProducts();
+  } else if (RouteIndex === "cartP") {
+    storeProducts = [];
+    storeCarts = await getDataCarts();
+    selectRemoveCart();
+  }
+}
+
 /*****************************************************************SOCKETS*************************************************************/
 
 socket.on("callCarts", async (getCarts) => {
@@ -838,10 +849,21 @@ socket.on("callCarts", async (getCarts) => {
 
 socket.on("addingProductCart", async (msj) => {
   console.log(msj);
+  reloadData();
+});
+
+socket.on("f5deleteProduct", async (idProduct) => {
+  console.log("The product " + idProduct.id + " has been deleted");
   if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    selectBtnCartProducts();
+    deletedProductCart(storeCarts[0]._id, idProduct.id).then(async (data) => {
+      storeCarts = await getDataCartsbyID(storeCarts[0]._id);
+      storeProducts = await getDataProductsbyID(storeCarts[0]._id);
+      selectBtnCartProducts();
+    });
   } else if (RouteIndex === "cartP") {
+    for (const listCart of storeCarts) {
+      deletedProductCart(listCart._id, idProduct.id);
+    }
     storeProducts = [];
     storeCarts = await getDataCarts();
     selectRemoveCart();
@@ -850,74 +872,32 @@ socket.on("addingProductCart", async (msj) => {
 
 socket.on("deletingProductCart", async (msj) => {
   console.log(msj);
-  if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    selectBtnCartProducts();
-  } else if (RouteIndex === "cartP") {
-    storeProducts = [];
-    storeCarts = await getDataCarts();
-    selectRemoveCart();
-  }
+  reloadData();
 });
 
 socket.on("removeProduct", async (msj) => {
   console.log(msj);
-  if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    selectBtnCartProducts();
-  } else if (RouteIndex === "cartP") {
-    storeProducts = [];
-    storeCarts = await getDataCarts();
-    selectRemoveCart();
-  }
+  reloadData();
 });
 
 socket.on("emptyCart", async (msj) => {
   console.log(msj);
-  if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    selectBtnCartProducts();
-  } else if (RouteIndex === "cartP") {
-    storeProducts = [];
-    storeCarts = await getDataCarts();
-    selectRemoveCart();
-  }
+  reloadData();
 });
 
 socket.on("removeCart", async (msj) => {
   console.log(msj);
-  if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    selectBtnCartProducts();
-  } else if (RouteIndex === "cartP") {
-    storeProducts = [];
-    storeCarts = await getDataCarts();
-    selectRemoveCart();
-  }
+  reloadData();
 });
 
 socket.on("NewCart", async (msj) => {
   console.log(msj);
-  if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    selectBtnCartProducts();
-  } else if (RouteIndex === "cartP") {
-    storeProducts = [];
-    storeCarts = await getDataCarts();
-    selectRemoveCart();
-  }
+  reloadData();
 });
 
 socket.on("transferCart", async (msj) => {
   console.log(msj);
-  if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    selectBtnCartProducts();
-  } else if (RouteIndex === "cartP") {
-    storeProducts = [];
-    storeCarts = await getDataCarts();
-    selectRemoveCart();
-  }
+  reloadData();
 });
 
 /*****************************************************************EVENTOS*************************************************************/

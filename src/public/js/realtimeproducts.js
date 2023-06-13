@@ -203,6 +203,7 @@ async function selectDelete() {
             if (result.isConfirmed) {
               await deleteData(selectBtn.id)
                 .then(async (data) => {
+                  const confirm=RouteIndex === "realTP"?true:false;
                   Swal.fire({
                     title: "Product Removed Successfully!!!",
                     text:
@@ -212,11 +213,17 @@ async function selectDelete() {
                       " --> " +
                       productSelect[0].tittle,
                     icon: "success",
-                    showConfirmButton: true,
+                    showConfirmButton: confirm,
                     allowOutsideClick: false,
                   });
                   filters();
-                  socket.emit("deleteproduct", "Product Removed");
+                  socket.emit("deleteproduct", {msj:"Product Removed",id:data});
+                  if(RouteIndex==="realTP/"){
+                    setTimeout(() => {
+                      window.location.href = "../realtimeproducts";
+                    }, 1000);
+                  }
+
                 })
                 .catch((error) => console.log("Error:" + error));
             } else if (result.isDenied) {
@@ -556,7 +563,7 @@ socket.on("f5NewProduct", async (addMsj) => {
 });
 
 socket.on("f5deleteProduct", async (deletedMsj) => {
-  console.log(deletedMsj);
+  console.log(deletedMsj.msj);
   if (RouteIndex === "realTP") {
     storeProducts = await getData();
     filters();

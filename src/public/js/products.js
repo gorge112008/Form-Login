@@ -613,7 +613,7 @@ socket.on("callProductsPublic", async (getProducts) => {
 });
 
 socket.on("f5deleteProduct", async (deletedMsj) => {
-  console.log(deletedMsj);
+  console.log(deletedMsj.msj);
   if (RouteIndex==="productP") {
     storeProducts = await getData({});
     filters();

@@ -1,25 +1,20 @@
-/*HOME -- REALTIMEPRODUCTS*/
+/*HOME*/
 
 /**********************************************************CONSTANTES/VARIABLES*************************************************************/
-
 const socket = io();
-let URLorigin = window.location.origin;
-let UrlP = URLorigin + "/api/products";
+let URLorigin = window.location.origin,
+  UrlP = URLorigin + "/api/products";
 let opc = "static";
-let btnsDelete;
+let btnsDelete, options, dataPagination;
 let storeProducts = [],
   resExo = [];
-let options; 
-let dataPagination;
 let query = {};
 
-const contain = document.querySelector(".container__grid");
-
-const dinamicPages = document.querySelector(".dinav__pages--center"),
+const contain = document.querySelector(".container__grid"),
+  dinamicPages = document.querySelector(".dinav__pages--center"),
   selectPrevPage = document.getElementById("page__btnIzq"),
-  selectNextPage = document.getElementById("page__btnDer");
-
-const selectOrder = document.getElementById("orderProducts"),
+  selectNextPage = document.getElementById("page__btnDer"),
+  selectOrder = document.getElementById("orderProducts"),
   selectCategory = document.getElementById("categoryProducts"),
   selectStatus = document.getElementById("statusProducts"),
   categoryOption = document.getElementById("selectCategory");
@@ -36,7 +31,6 @@ class NewParams {
 }
 
 /*****************************************************************FUNCIONES*************************************************************/
-
 async function createHtml() {
   if (storeProducts.length == 0) {
     contain.innerHTML = "";

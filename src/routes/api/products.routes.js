@@ -5,7 +5,6 @@ import middlewareGetProducts from "../../middlewares/getProductsMiddleware.js";
 const routerProducts = Router();
 
 /*****************************************************************GET*************************************************************/
-
 routerProducts.get("/products", middlewareGetProducts, async (req, res) => {
   try {
     const products = res.locals.products;
@@ -26,7 +25,6 @@ routerProducts.get("/products/:pid", async (req, res) => {
 });
 
 /*****************************************************************POST*************************************************************/
-
 routerProducts.post("/products", async (req, res) => {
   try {
     const newProduct = req.body;
@@ -38,7 +36,6 @@ routerProducts.post("/products", async (req, res) => {
 });
 
 /*****************************************************************PUT*************************************************************/
-
 routerProducts.put("/products/:pid", async (req, res) => {
   try {
     const pid = req.params.pid;
@@ -51,7 +48,6 @@ routerProducts.put("/products/:pid", async (req, res) => {
 });
 
 /*****************************************************************DELETE*************************************************************/
-
 routerProducts.delete("/products/:pid", async (req, res) => {
   try {
     const pid = req.params.pid;

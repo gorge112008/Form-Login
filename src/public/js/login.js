@@ -1,9 +1,9 @@
 /*LOGIN*/
 
 /*********************************************************CONSTANTES/VARIABLES*************************************************************/
-let URLorigin = window.location.origin;
-let UrlCook = URLorigin + "/api/";
-let UrlLogin = URLorigin + "/sessions/";
+let URLorigin = window.location.origin,
+  UrlCook = URLorigin + "/api/",
+  UrlLogin = URLorigin + "/sessions/";
 
 const form = document.querySelector("form"),
   SignUp = document.querySelector(".btnSignUp"),
@@ -11,8 +11,8 @@ const form = document.querySelector("form"),
   inputPassword = document.getElementById("password"),
   userCheckbox = document.getElementById("userCheck"),
   pswCheckbox = document.getElementById("pswCheck"),
-  rememberCheckbox = document.getElementById("loginCheck");
-const btnViewPsw = document.getElementById("btnTogglePsw");
+  rememberCheckbox = document.getElementById("loginCheck"),
+  btnViewPsw = document.getElementById("btnTogglePsw");
 
 /*********************************************************FUNCIONES*************************************************************/
 async function VerificateSession() {

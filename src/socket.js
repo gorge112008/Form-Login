@@ -24,11 +24,11 @@ async function initSocketServer(server) {
     });
 
     socket.on("deleteproduct", async (idproduct) => {
-      socket.broadcast.emit("f5deleteProduct", idproduct);
+      io.emit("f5deleteProduct", idproduct);
     });
 
     socket.on("deleteofcart", async (msj) => {
-      socket.emit("deleteofcart", msj);
+      io.emit("deleteofcart", msj);
     });
 
     socket.on("updateproduct", async (product) => {
@@ -44,6 +44,14 @@ async function initSocketServer(server) {
     });
     socket.on("viewingCloseProduct", async (id) => {
       socket.broadcast.emit("viewingCloseProduct", id);
+    });
+
+    socket.on("viewingCart", async (id) => {
+      io.emit("viewingCart", id);
+    });
+
+    socket.on("viewingCloseCart", async (id) => {
+      socket.broadcast.emit("viewingCloseCart", id);
     });
 
     socket.on("addingProductCart", async (msj) => {

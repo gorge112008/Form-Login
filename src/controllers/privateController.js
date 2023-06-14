@@ -1,17 +1,11 @@
 let privateProducts;
 
 const privateController = {
-  profile: (req, res) => {
-    res.render("private/profile");
-  },
-  dashboard: (req, res) => {
-    res.render("private/dashboard");
-  },
   realtimeproducts: (req, res) => {
     const { rol, email } = res.locals.resUser;
     privateProducts = res.locals.resProducts;
     if (rol == "ADMIN") {
-      res.render("private/realtimeProducts", {
+      res.render("private/realtimeproducts", {
         rol: rol,
         user: email,
         body: privateProducts,
@@ -23,4 +17,4 @@ const privateController = {
 };
 
 export default privateController;
-export { privateProducts};
+export { privateProducts };

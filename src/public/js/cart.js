@@ -1,16 +1,18 @@
+/*CART*/
+
+/*********************************************************CONSTANTES/VARIABLES*************************************************************/
 const socket = io();
-let URLorigin = window.location.origin;
-let UrlP = URLorigin + "/api/products";
-let UrlC = URLorigin + "/api/carts";
+let URLorigin = window.location.origin,
+  UrlP = URLorigin + "/api/products",
+  UrlC = URLorigin + "/api/carts";
 let opc = "static";
-let btnRemove, btnCloseView, btnRemoveCart, btnTransferCart;
+let btnRemove, btnCloseView, btnRemoveCart, btnTransferCart, options;
 let storeCarts = [],
   storeProducts = [],
-  resExo = [];
-let options;
-let dataProducts = [];
-let query = {},
+  resExo = [],
+  dataProducts = [],
   ListCarts = [];
+let query = {};
 
 const staticContain = document.querySelector(".static__container--cart"),
   titleCart = document.querySelector(".static__tittleCart"),
@@ -266,224 +268,18 @@ async function focusAction() {
   });
 }
 
-/*INICIO FUNCIONES CRUD*/
-async function getDataCarts() {
-  try {
-    let response = await fetch(`${UrlC}`, {
-      method: "GET",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-    });
-    const data = await response.json();
-    return data;
-  } catch {
-    console.log(Error);
+async function selectAction() {
+  if (RouteIndex === "cartP") {
+    storeProducts = [];
+    storeCarts = await getDataCarts();
+    console.log("muestrame todos los carts actuales"+JSON.stringify(storeCarts));
+    selectRemoveCart();
+  } else if (RouteIndex === "cartP/") {
+    socket.emit("viewingCart",storeCarts[0]._id)
+    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
+    selectBtnCartProducts();
   }
 }
-
-async function getDataCartsbyID(id) {
-  let response = await fetch(`${UrlC}/${id}`, {
-    method: "GET",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Credentials": true,
-    mode: "cors",
-  });
-  const data = await response.json();
-  return data;
-}
-
-async function getDataProductsbyID(id) {
-  try {
-    let response = await fetch(`${UrlC}/${id}`, {
-      method: "GET",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-    });
-    const data = await response.json();
-    const dataProducts = data[0].products[0].payload;
-    return dataProducts;
-  } catch {
-    console.log(Error);
-  }
-}
-
-async function getDataOneProductbyID(id) {
-  try {
-    let response = await fetch(`${UrlP}/${id}`, {
-      method: "GET",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-    });
-    const data = await response.json();
-    return data;
-  } catch {
-    console.log(Error);
-  }
-}
-
-async function createCart(data) {
-  try {
-    let response = await fetch(UrlC, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-      body: JSON.stringify(data),
-    });
-    if (response.status == 400) {
-      console.warn("Error en el cliente");
-      return;
-    } else if (response.status == 200) {
-      return response.json();
-    }
-  } catch {
-    console.log(Error);
-  }
-}
-
-async function updateData(idCart, idProduct, data) {
-  try {
-    let response = await fetch(`${UrlC}/${idCart}/products/${idProduct}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-      body: JSON.stringify(data),
-    });
-    if (response.status == 400) {
-      console.warn("Error en el cliente");
-      return;
-    } else if (response.status == 200) {
-      datos = await response.json();
-      msj = datos.msj;
-      return msj;
-    }
-  } catch {
-    console.log(Error);
-  }
-}
-
-async function updateOneProductbyID(idProduct, data) {
-  try {
-    let response = await fetch(`${UrlP}/${idProduct}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-      body: JSON.stringify(data),
-    });
-    if (response.status == 400) {
-      console.warn("Error en el cliente");
-      return;
-    } else if (response.status == 200) {
-      datos = await response.json();
-      msj = datos.msj;
-      return msj;
-    }
-  } catch {
-    console.log(Error);
-  }
-}
-
-async function deletedProductCart(idCart, idProduct) {
-  try {
-    let response = await fetch(`${UrlC}/${idCart}/products/${idProduct}`, {
-      method: "DELETE",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-    });
-    if (response.status == 400) {
-      console.warn("Error en el cliente");
-      return;
-    } else if (response.status == 200) {
-      datos = await response.json();
-      msj = datos.msj;
-      return msj;
-    }
-  } catch {
-    console.log(Error);
-  }
-}
-
-async function deleteAllProductsCart(idCart) {
-  try {
-    let response = await fetch(`${UrlC}/${idCart}`, {
-      method: "DELETE",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-    });
-    if (response.status == 400) {
-      console.warn("Error en el cliente");
-      return;
-    } else if (response.status == 200) {
-      datos = await response.json();
-      msj = datos.msj;
-      return msj;
-    }
-  } catch {
-    console.log(Error);
-  }
-}
-
-async function putTransfCart(idCart, data) {
-  try {
-    let response = await fetch(`${UrlC}/${idCart}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-      body: JSON.stringify(data),
-    });
-    if (response.status == 400) {
-      console.warn("Error en el cliente");
-      return;
-    } else if (response.status == 200) {
-      data = await response.json();
-      return data;
-    }
-  } catch {
-    console.log(Error);
-  }
-}
-
-async function deleteCart(idCart) {
-  try {
-    let response = await fetch(`${UrlC}/${idCart}/delete`, {
-      method: "DELETE",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-      mode: "cors",
-    });
-    if (response.status == 400) {
-      console.warn("Error en el cliente");
-      return;
-    } else if (response.status == 200) {
-      datos = await response.json();
-      msj = datos.msj;
-      return msj;
-    }
-  } catch {
-    console.log(Error);
-  }
-}
-/*FIN FUNCIONES CRUD*/
 
 async function validateStock(idProduct, stockModif, action) {
   const product = await getDataOneProductbyID(idProduct);
@@ -805,102 +601,330 @@ async function selectRemoveCart() {
   }
 }
 
-async function reloadData() {
-  if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    selectBtnCartProducts();
-  } else if (RouteIndex === "cartP") {
-    storeProducts = [];
-    storeCarts = await getDataCarts();
-    selectRemoveCart();
+/*INICIO FUNCIONES CRUD*/
+async function getDataCarts() {
+  try {
+    let response = await fetch(`${UrlC}`, {
+      method: "GET",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    const data = await response.json();
+    return data;
+  } catch {
+    console.log(Error);
   }
 }
+
+async function getDataCartsbyID(id) {
+  let response = await fetch(`${UrlC}/${id}`, {
+    method: "GET",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": true,
+    mode: "cors",
+  });
+  const data = await response.json();
+  return data;
+}
+
+async function getDataProductsbyID(id) {
+  try {
+    let response = await fetch(`${UrlC}/${id}`, {
+      method: "GET",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    const data = await response.json();
+    const dataProducts = data[0].products[0].payload;
+    return dataProducts;
+  } catch {
+    console.log(Error);
+  }
+}
+
+async function getDataOneProductbyID(id) {
+  try {
+    let response = await fetch(`${UrlP}/${id}`, {
+      method: "GET",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    const data = await response.json();
+    return data;
+  } catch {
+    console.log(Error);
+  }
+}
+
+async function createCart(data) {
+  try {
+    let response = await fetch(UrlC, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+      body: JSON.stringify(data),
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      return response.json();
+    }
+  } catch {
+    console.log(Error);
+  }
+}
+
+async function updateData(idCart, idProduct, data) {
+  try {
+    let response = await fetch(`${UrlC}/${idCart}/products/${idProduct}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+      body: JSON.stringify(data),
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      datos = await response.json();
+      msj = datos.msj;
+      return msj;
+    }
+  } catch {
+    console.log(Error);
+  }
+}
+
+async function updateOneProductbyID(idProduct, data) {
+  try {
+    let response = await fetch(`${UrlP}/${idProduct}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+      body: JSON.stringify(data),
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      datos = await response.json();
+      msj = datos.msj;
+      return msj;
+    }
+  } catch {
+    console.log(Error);
+  }
+}
+
+async function deletedProductCart(idCart, idProduct) {
+  try {
+    let response = await fetch(`${UrlC}/${idCart}/products/${idProduct}`, {
+      method: "DELETE",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      datos = await response.json();
+      msj = datos.msj;
+      return msj;
+    }
+  } catch {
+    console.log(Error);
+  }
+}
+
+async function deleteAllProductsCart(idCart) {
+  try {
+    let response = await fetch(`${UrlC}/${idCart}`, {
+      method: "DELETE",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      datos = await response.json();
+      msj = datos.msj;
+      return msj;
+    }
+  } catch {
+    console.log(Error);
+  }
+}
+
+async function putTransfCart(idCart, data) {
+  try {
+    let response = await fetch(`${UrlC}/${idCart}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+      body: JSON.stringify(data),
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      data = await response.json();
+      return data;
+    }
+  } catch {
+    console.log(Error);
+  }
+}
+
+async function deleteCart(idCart) {
+  try {
+    let response = await fetch(`${UrlC}/${idCart}/delete`, {
+      method: "DELETE",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      datos = await response.json();
+      msj = datos.msj;
+      return msj;
+    }
+  } catch {
+    console.log(Error);
+  }
+}
+/*FIN FUNCIONES CRUD*/
 
 /*****************************************************************SOCKETS*************************************************************/
 
 socket.on("callCarts", async (getCarts) => {
   Object.assign(storeCarts, getCarts);
   if (storeCarts.length == 1) {
-    sessionStorage.setItem("cartView", storeCarts[0]._id);
     if (RouteIndex === "cartP") {
       storeCarts = await getDataCarts();
       storeProducts = [];
-      focusAction();
       selectRemoveCart();
+    }else if (RouteIndex === "cartP/") {
+      sessionStorage.setItem("cartView", storeCarts[0]._id);
+      storeProducts = await getDataProductsbyID(storeCarts[0]._id);
+      selectBtnCartProducts();
     }
   } else if (storeCarts.length != 1) {
     if (RouteIndex === "cartP/") {
       let idCart = sessionStorage.getItem("cartView");
       storeProducts = await getDataProductsbyID(idCart);
-      focusAction();
       selectBtnCartProducts();
+    }else if (RouteIndex === "cartP"){
+      storeCarts = await getDataCarts();
+      storeProducts = [];
+      selectRemoveCart();
     }
   }
-  if (RouteIndex === "cartP") {
-    storeProducts = [];
-    focusAction();
-    selectRemoveCart();
-  } else if (RouteIndex === "cartP/") {
-    storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-    focusAction();
-    selectBtnCartProducts();
-  }
+  focusAction();
 });
 
 socket.on("addingProductCart", async (msj) => {
   console.log(msj);
-  reloadData();
+  selectAction();
 });
 
-socket.on("f5deleteProduct", async (idProduct) => {
-  console.log("The product " + idProduct.id + " has been deleted");
-  if (RouteIndex === "cartP/") {
-    deletedProductCart(storeCarts[0]._id, idProduct.id).then(async (data) => {
-      storeCarts = await getDataCartsbyID(storeCarts[0]._id);
-      storeProducts = await getDataProductsbyID(storeCarts[0]._id);
-      selectBtnCartProducts();
-    });
-  } else if (RouteIndex === "cartP") {
-    for (const listCart of storeCarts) {
-      deletedProductCart(listCart._id, idProduct.id);
-    }
-    storeProducts = [];
-    storeCarts = await getDataCarts();
-    selectRemoveCart();
-  }
+socket.on("deleteofcart", async (msj) => {
+  console.log(msj);
+  selectAction();
 });
 
 socket.on("deletingProductCart", async (msj) => {
   console.log(msj);
-  reloadData();
+  selectAction();
 });
 
 socket.on("removeProduct", async (msj) => {
   console.log(msj);
-  reloadData();
+  selectAction();
 });
 
 socket.on("emptyCart", async (msj) => {
   console.log(msj);
-  reloadData();
+  selectAction();
 });
 
 socket.on("removeCart", async (msj) => {
   console.log(msj);
-  reloadData();
+  selectAction();
 });
 
 socket.on("NewCart", async (msj) => {
   console.log(msj);
-  reloadData();
+  selectAction();
 });
 
 socket.on("transferCart", async (msj) => {
   console.log(msj);
-  reloadData();
+  selectAction();
 });
 
-/*****************************************************************EVENTOS*************************************************************/
+socket.on("viewingCart", async (id) => {
+  if (RouteIndex === "cartP") {
+    let int = -1;
+    let btnTransferCart = [];
+    let btnRemoveCart = [];
+    selectRemoveCart();
+    btnTransferCart = document.querySelectorAll(".btnTransferCart");
+    btnRemoveCart = document.querySelectorAll(".btnRemoveCart");
+    for (const cart of storeCarts) {
+      int++;
+      if (cart._id == id) {
+        btnTransferCart[int].classList.add("hidden");
+        btnRemoveCart[int].classList.add("hidden");
+      }
+    }
+  }
+});
+
+socket.on("viewingCloseCart", async (id) => {
+  if (RouteIndex === "cartP") {
+    let int = -1;
+    let btnTransferCart = [];
+    let btnRemoveCart = [];
+    selectRemoveCart();
+    btnTransferCart = document.querySelectorAll(".btnTransferCart");
+    btnRemoveCart = document.querySelectorAll(".btnRemoveCart");
+    for (const cart of storeCarts) {
+      int++;
+      if (cart._id == id) {
+        btnTransferCart[int].classList.remove("hidden");
+        btnRemoveCart[int].classList.remove("hidden");
+      }
+    }
+  }
+});
+
+/*****************************************************************EVENTS*************************************************************/
 
 btnAddNewCart.addEventListener("click", () => {
   Swal.fire({
@@ -960,5 +984,7 @@ btnClearCart.addEventListener("click", () => {
 });
 
 btnExitCart.onclick = () => {
+  const idCart = sessionStorage.getItem("cartView");
+  socket.emit("viewingCloseCart", idCart);
   window.location.href = "../cart";
 };

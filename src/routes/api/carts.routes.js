@@ -24,8 +24,7 @@ routerCarts.get("/carts/:cid", async (req, res) => {
 });
 
 /*****************************************************************POST*************************************************************/
-/* RUTAS PARA CREAR CARRITOS Y AGREGAR PRODUCTOS CON POST//
- */
+/* RUTAS PARA CREAR CARRITOS Y AGREGAR PRODUCTOS CON POST*/
 routerCarts.post("/carts", async (req, res) => {
   //Opcion para crear un nuevo carrito vacio
   try {
@@ -180,6 +179,7 @@ routerCarts.put("/carts/:cid/products/:pid", async function (req, res) {
     res.status(500).send(console.log(error));
   }
 });
+
 /*****************************************************************DELETE*************************************************************/
 routerCarts.delete("/carts/:cid/delete", async (req, res) => {
   //Opcion para Eliminar el carrito especifico

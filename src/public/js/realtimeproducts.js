@@ -1,16 +1,13 @@
-/*HOME -- REALTIMEPRODUCTS*/
+/*REALTIMEPRODUCTS*/
 /**********************************************************CONSTANTES/VARIABLES*************************************************************/
-
 const socket = io();
-let URLorigin=window.location.origin;
-let UrlP = URLorigin + "/api/products";
+let URLorigin = window.location.origin,
+  UrlP = URLorigin + "/api/products",
+  UrlC = URLorigin + "/api/carts";
 let opc = "static";
-let btnsDelete, btnAdd;
+let options, dataPagination, querySelect, btnsDelete, btnAdd;
 let storeProducts = [],
   resExo = [];
-let options;
-let dataPagination;
-let querySelect;
 let query = {};
 
 const contain = document.querySelector(".container__grid"),
@@ -169,10 +166,7 @@ async function selectAction() {
     });
     if (opc == "static") {
       await updateData(storeProducts[0]._id, { status: "error" });
-      socket.emit(
-        "updatingProduct",
-        storeProducts[0].tittle + " updating..."
-      );
+      socket.emit("updatingProduct", storeProducts[0].tittle + " updating...");
       opc = "updating";
     } else {
       selectDelete();
@@ -199,11 +193,12 @@ async function selectDelete() {
             showCancelButton: false,
             confirmButtonText: "YES",
             denyButtonText: "NOT",
-          }).then(async(result) => {
+          }).then(async (result) => {
             if (result.isConfirmed) {
+              await updateCarts(selectBtn.id);
               await deleteData(selectBtn.id)
                 .then(async (data) => {
-                  const confirm=RouteIndex === "realTP"?true:false;
+                  const confirm = RouteIndex === "realTP" ? true : false;
                   Swal.fire({
                     title: "Product Removed Successfully!!!",
                     text:
@@ -217,13 +212,16 @@ async function selectDelete() {
                     allowOutsideClick: false,
                   });
                   filters();
-                  socket.emit("deleteproduct", {msj:"Product Removed",id:data});
-                  if(RouteIndex==="realTP/"){
+                  socket.emit("deleteofcart", "Product Removed of Cart");
+                  socket.emit("deleteproduct", {
+                    msj: "Product Removed",
+                    id: data,
+                  });
+                  if (RouteIndex === "realTP/") {
                     setTimeout(() => {
                       window.location.href = "../realtimeproducts";
                     }, 1000);
                   }
-
                 })
                 .catch((error) => console.log("Error:" + error));
             } else if (result.isDenied) {
@@ -239,7 +237,6 @@ async function selectDelete() {
           formAddProduct.className ==
           "dinamic__container--addProduct inactiveAdd"
         ) {
-          
           formAddProduct.classList.remove("inactiveAdd");
           listProduct.classList.remove("m12");
           listProduct.classList.add("m7");
@@ -300,10 +297,9 @@ async function filters() {
       icon: "warning",
       confirmButtonText: "Accept",
     });
-  } 
-    selectDelete();
+  }
+  selectDelete();
 }
-
 
 function saveUpdate(data) {
   Swal.fire({
@@ -352,6 +348,11 @@ async function validateProduct(product) {
     inputStock.focus();
     inputError.unshift("The entered stock cannot be negative");
     result = "Error";
+  }else if (inputStock.value > 5000){
+    inputStock.value = "";
+    inputStock.focus();
+    inputError.unshift("The entered stock limit is 5000");
+    result = "Error";
   }
   if (inputPrice.value <= 0) {
     inputPrice.value = "";
@@ -367,7 +368,7 @@ async function validateProduct(product) {
       result = "Error";
     }
   } else {
-    if (RouteIndex=== "realTP") {
+    if (RouteIndex === "realTP") {
       inputCode.value = "";
       inputCode.focus();
       inputError.unshift("The code entered already exists");
@@ -390,8 +391,8 @@ async function pagination() {
     prevLink,
     nexLink,
   } = dataPagination;
-  let prevLinkUp=URLorigin+prevLink;
-  let nexLinkUp=URLorigin+nexLink;
+  let prevLinkUp = URLorigin + prevLink;
+  let nexLinkUp = URLorigin + nexLink;
   dinamicPages.innerHTML = "";
   dinamicPages.innerHTML = `<p>Page<button>${page}</button>of ${totalPages}</p>`;
   if (hasPrevPage == false) {
@@ -458,6 +459,21 @@ async function getData(params) {
   }
 }
 
+async function getDataCarts() {
+  try {
+    let response = await fetch(`${UrlC}`, {
+      method: "GET",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    const data = await response.json();
+    return data;
+  } catch {
+    console.log(Error);
+  }
+}
+
 async function getDatabyID(id) {
   let response = await fetch(`${UrlP}/${id}`, {
     method: "GET",
@@ -516,6 +532,14 @@ async function updateData(id, data) {
   }
 }
 
+async function updateCarts(idproduct){
+  const storeCarts = await getDataCarts();
+  for (const listCart of storeCarts) {
+    deletedProductCart(listCart._id, idproduct);
+  console.log("ACTUALIZANDO CARRITO"+listCart._id+" PRODUCTO: "+idproduct);
+  }
+}
+
 async function deleteData(id) {
   try {
     let response = await fetch(`${UrlP}/${id}`, {
@@ -529,6 +553,28 @@ async function deleteData(id) {
     console.log(Error);
   }
 }
+
+async function deletedProductCart(idCart, idProduct) {
+  try {
+    let response = await fetch(`${UrlC}/${idCart}/products/${idProduct}`, {
+      method: "DELETE",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      mode: "cors",
+    });
+    if (response.status == 400) {
+      console.warn("Error en el cliente");
+      return;
+    } else if (response.status == 200) {
+      datos = await response.json();
+      msj = datos.msj;
+      return msj;
+    }
+  } catch {
+    console.log(Error);
+  }
+}
+
 /*FIN FUNCIONES CRUD*/
 
 /*****************************************************************SOCKETS*************************************************************/
@@ -563,7 +609,7 @@ socket.on("f5NewProduct", async (addMsj) => {
 });
 
 socket.on("f5deleteProduct", async (deletedMsj) => {
-  console.log(deletedMsj.msj);
+  console.log(deletedMsj);
   if (RouteIndex === "realTP") {
     storeProducts = await getData();
     filters();
@@ -702,7 +748,7 @@ validateProducts.onclick = async () => {
   }
 };
 
-formCancel.onclick =async () => {
+formCancel.onclick = async () => {
   if (RouteIndex === "realTP/") {
     await updateData(storeProducts[0]._id, { status: "success" });
     opc = "static";
@@ -721,7 +767,7 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const product = new NewProduct();
   validateProduct(product)
-    .then(async(response) => {
+    .then(async (response) => {
       [result, inputError] = response;
       if (result == "Success") {
         if (RouteIndex === "realTP/") {
@@ -748,7 +794,10 @@ form.addEventListener("submit", async (e) => {
         }
       } else if (result == "Error") {
         let i = 1;
-        let action=(RouteIndex==="realTP")?"Invalid New Product":"Invalid Product Update";
+        let action =
+          RouteIndex === "realTP"
+            ? "Invalid New Product"
+            : "Invalid Product Update";
         const errorMsj = inputError.reduce(
           (acum, ele) =>
             acum + `<ul><li><b>Error ${i++}>></b> ${ele}...</li></ul>`,

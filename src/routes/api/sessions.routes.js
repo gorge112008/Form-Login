@@ -5,30 +5,7 @@ import checkActiveSession from "../../middlewares/checkSession.js";
 
 const routerSessions = Router();
 
-routerSessions.post("/login",checkActiveSession,auth, (req, res) => {
-  try {
-    const admin = req.session.admin;
-    const user = req.session.user;
-    const userName = admin ? admin.first_name : user.first_name;
-    const session = req.session;
-    const msj = `WELCOME ${userName.toUpperCase()}`;
-    req.session.counter = 1;
-    res.status(200).json({ success: msj, session: session });
-  } catch (error) {
-    console.error("Not exist any session: " + error);
-  }
-});
-
-routerSessions.post("/signup", async (req, res) => {
-  const newUser = req.body;
-  try {
-    const response = await UserFM.addUser(newUser);
-    res.status(201).json(response);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
+/*****************************************************************GET*************************************************************/
 routerSessions.get("/session", (req, res) => {
   try {
     const session = req.session;
@@ -61,6 +38,31 @@ routerSessions.get("/logout", (req, res) => {
       res.status(200).json(msj);
     }
   });
+});
+
+/*****************************************************************POST*************************************************************/
+routerSessions.post("/login",checkActiveSession,auth, (req, res) => {
+  try {
+    const admin = req.session.admin;
+    const user = req.session.user;
+    const userName = admin ? admin.first_name : user.first_name;
+    const session = req.session;
+    const msj = `WELCOME ${userName.toUpperCase()}`;
+    req.session.counter = 1;
+    res.status(200).json({ success: msj, session: session });
+  } catch (error) {
+    console.error("Not exist any session: " + error);
+  }
+});
+
+routerSessions.post("/signup", async (req, res) => {
+  const newUser = req.body;
+  try {
+    const response = await UserFM.addUser(newUser);
+    res.status(201).json(response);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 export default routerSessions;

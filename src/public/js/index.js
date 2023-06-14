@@ -9,8 +9,8 @@ const navHeader = document.querySelector(".header__nav"),
   listProduct = document.querySelector(".dinamic__container--listProduct"),
   btnReturn = document.querySelector("#return"),
   btnAddNewCart = document.querySelector(".btnAddNewCart"),
-  btnAddNewProductMLD=document.querySelector(".btnAsideMLD"),
-  btnAddNewProductSD=document.querySelector(".asideSD__dropdown--button");
+  btnAddNewProductMLD = document.querySelector(".btnAsideMLD"),
+  btnAddNewProductSD = document.querySelector(".asideSD__dropdown--button"),
   btnExitCart = document.querySelector(".btnExitCart"),
   btnClearCart = document.querySelector(".btnCleanCart");
 
@@ -109,14 +109,14 @@ function controlerForm() {
   if (
     formAddProduct.className == "dinamic__container--addProduct inactiveAdd"
   ) {
-    btnAddNewProductMLD.innerHTML=`<i class="fa-regular fa-square-minus fa-bounce"><p>Add Close</p></i>`;
-    btnAddNewProductSD.innerHTML=`<i class="fa-regular fa-square-minus fa-bounce"><b>Add Close<b></i>`;
+    btnAddNewProductMLD.innerHTML = `<i class="fa-regular fa-square-minus fa-bounce"><p>Add Close</p></i>`;
+    btnAddNewProductSD.innerHTML = `<i class="fa-regular fa-square-minus fa-bounce"><b>Add Close<b></i>`;
     formAddProduct.classList.remove("inactiveAdd");
     listProduct.classList.remove("m12");
     listProduct.classList.add("m7");
   } else if (formAddProduct.className == "dinamic__container--addProduct") {
-    btnAddNewProductMLD.innerHTML=`<i class="fa-regular fa-square-plus fa-bounce"><p>Add Product</p></i>`;
-    btnAddNewProductSD.innerHTML=`<i class="fa-regular fa-square-minus fa-bounce"><b>Add Product<b></i>`;
+    btnAddNewProductMLD.innerHTML = `<i class="fa-regular fa-square-plus fa-bounce"><p>Add Product</p></i>`;
+    btnAddNewProductSD.innerHTML = `<i class="fa-regular fa-square-plus fa-bounce"><b>Add Product<b></i>`;
     formAddProduct.classList.add("inactiveAdd");
     listProduct.classList.remove("m7");
     listProduct.classList.add("m12");
@@ -125,18 +125,24 @@ function controlerForm() {
 
 /*****************************************************************EVENTOS*************************************************************/
 
-mldBtnAddProduct!=null?mldBtnAddProduct.onclick = () => {
-  controlerForm();
-}:null;
+mldBtnAddProduct != null
+  ? (mldBtnAddProduct.onclick = () => {
+      controlerForm();
+    })
+  : null;
 
-sdBtnAddProduct!=null?sdBtnAddProduct.onclick = () => {
-  controlerForm();
-}:null;
+sdBtnAddProduct != null
+  ? (sdBtnAddProduct.onclick = () => {
+      controlerForm();
+    })
+  : null;
 
-btnNavigationPanel!=null?btnNavigationPanel.onclick = () => {
-  optionNavigationPanel.className == "asideMLD__menu--options-ul hidden"
-    ? optionNavigationPanel.classList.remove("hidden")
-    : optionNavigationPanel.classList.add("hidden");
-}:null;
+btnNavigationPanel != null
+  ? (btnNavigationPanel.onclick = () => {
+      optionNavigationPanel.className == "asideMLD__menu--options-ul hidden"
+        ? optionNavigationPanel.classList.remove("hidden")
+        : optionNavigationPanel.classList.add("hidden");
+    })
+  : null;
 
 actionRoute();

@@ -1,26 +1,25 @@
-/*signup*/
+/*SIGNUP*/
 
 /*********************************************************CONSTANTES/VARIABLES*************************************************************/
-let URLorigin = window.location.origin;
-let UrlU = URLorigin + "/api/users";
-let UrlCook = URLorigin + "/api/";
-let Urlsignup = URLorigin + "/sessions/";
-let SignUp = document.querySelector(".btnSignUp"), //OBTENIENDO DATOS DE LA ETIQUETA HTML CON EL ID: REGISTRAR.
-  Login = document.querySelector(".btnLogin"); //OBTENIENDO DATOS DE LA ETIQUETA HTML CON EL ID: INGRESAR.
-checkbox = document.querySelector(".form-check-input"); //OBTENIENDO DATOS DE LA ETIQUETA HTML CON EL ID: CHECK.
-const user = document.querySelector(".signup__user"); //OBTENIENDO DATOS INGRESADOS EN EL INPUT USUARIO.
-const password = document.querySelector(".signup__psw"); //OBTENIENDO DATOS INGRESADOS EN EL INPUT PASSWORD.
-let label = document.querySelectorAll(".form-label"); //OBTENIENDO DATOS DE LAS ETIQUETAS HTML CON LAS CLASES:FORM-LABEL.
-
-let form = document.querySelector("form"),
+let URLorigin = window.location.origin,
+  UrlU = URLorigin + "/api/users",
+  UrlCook = URLorigin + "/api/",
+  Urlsignup = URLorigin + "/sessions/";
+let SignUp = document.querySelector(".btnSignUp"),
+  Login = document.querySelector(".btnLogin"),
+  checkbox = document.querySelector(".form-check-input"),
+  label = document.querySelectorAll(".form-label"),
+  form = document.querySelector("form"),
   ageInput = document.querySelector(".signup__age");
 
-const inputFirstName = document.getElementById("first_name"),
+const user = document.querySelector(".signup__user"),
+  password = document.querySelector(".signup__psw"),
+  inputFirstName = document.getElementById("first_name"),
   inputLastName = document.getElementById("last_name"),
   inputEmail = document.getElementById("email"),
   inputAge = document.getElementById("age"),
-  inputPassword = document.getElementById("password");
-  const btnViewPsw=document.getElementById("btnTogglePsw");
+  inputPassword = document.getElementById("password"),
+  btnViewPsw = document.getElementById("btnTogglePsw");
 
 /*****************************************************************CLASES*************************************************************/
 class NewCart {
@@ -39,73 +38,7 @@ class NewUser {
   }
 }
 
-//FUNCIÓN QUE REGISTRARÁ Y GUARDARÁ LOS VALORES INGRESADOS EN LOS IMPUTS.
-function guardar(valor) {
-  let usuario = { usuario: user.value, password: password.value }; //CONSTRUYENDO UN OBJETO CON LOS VALORES INGRESADOS.
-  if (usuario.usuario == "" || usuario.password == "") {
-    //SI LOS CAMPOS ESTAN VACIOS SE ACTIVA UN INDICADOR Y RETORNA
-    Swal.fire({
-      //INDICANDO FINALIZACIÓN DEL PEDIDO MEDIANTE LIBRERIA SWEETALERT2.
-      title: "Campos Vacios!",
-      text: "Por favor, todos los campos son requeridos",
-      icon: "warning",
-      confirmButtonText: "Aceptar",
-    });
-    return;
-  } else {
-    if (valor === "localStorage") {
-      //GUARDANDO VALORES EN LA LOCALSTORAGE.
-      localStorage.setItem("usuario", JSON.stringify(usuario));
-      registro.setAttribute("disabled", "true"); ///DESHABILITANDO EL BOTON REGISTRAR.
-      ingreso.className = "ref-ingresar"; //ACTIVANDO EL BOTON INGRESAR.
-      user.setAttribute("readonly", "true");
-      password.setAttribute("readonly", "true");
-      checkbox.setAttribute("disabled", "true");
-    }
-    if (valor === "sessionStorage") {
-      //GUARDANDO VALORES EN LA SESSIONSTORAGE.
-      sessionStorage.setItem("usuario", JSON.stringify(usuario));
-      registro.setAttribute("disabled", "true"); //ACTIVANDO EL BOTON INGRESAR.
-      user.setAttribute("readonly", "true");
-      password.setAttribute("readonly", "true");
-    }
-  }
-  return usuario; //RETORNANDO EL OBJETO CREADO.
-}
-//FUNCION QUE COMPROBARÁ LA CONTRASEÑA DE LOS USUARIOS REGISTRADOS.
-function comprobar(valor) {
-  password.value == valor
-    ? (window.location.href = "/")
-    : Swal.fire({
-        //COMPROBANDO CONTRASEÑA DE USUARIO.
-        //INDICANDO CONTRASEÑA INCORRECTA MEDIANTE LIBRERIA SWEETALERT2.
-        title: "Contraseña incorrecta!",
-        text: "Por favor, ingrese su contraseña correcta o haga un nuevo registro",
-        icon: "warning",
-        confirmButtonText: "Aceptar",
-      });
-}
-
-//COMPROBANDO EXISTENCIA DE USUARIOS DENTRO DE LA LOCALSTORAGE.
-const existe = JSON.parse(localStorage.getItem("usuario"));
-if (existe != null) {
-  user.value = existe.usuario; //INGRESANDO EL USUARIO RECORDADO EN EL INPUT AUTOMATICAMENTE.
-  //checkbox.setAttribute("checked", "true");
-  //checkbox.setAttribute("disabled", "true");
-  Swal.fire({
-    title: "Bienvenido de nuevo!",
-    text: "Usuario Registrado: " + user.value,
-    icon: "info",
-    confirmButtonText: "Aceptar",
-  });
-  //registro.innerText = "NUEVO"; //CAMBIANDO VALOR DEL BOTON REGISTRAR PARA INGRESAR NUEVO USUARIO.
-  ingreso.className = "ref-ingresar"; //ACTIVANDO BOTON INGRESAR.
-}
-
-Login.addEventListener("click", async (e) => {
-  e.preventDefault();
-  window.location.href = "../login";
-});
+/*****************************************************************FUNCIONES*************************************************************/
 
 async function startSession(data) {
   try {
@@ -201,6 +134,15 @@ async function validateUser(user) {
   return [result, inputMsj];
 }
 
+async function age() {
+  let listAge;
+  for (let i = 18; i < 70; i++) {
+    listAge += `<option value="${i}">${i}</option>`;
+  }
+  ageInput.innerHTML = `${listAge}`;
+}
+
+/*****************************************************************EVENTOS*************************************************************/
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const newUser = new NewUser();
@@ -237,22 +179,19 @@ form.addEventListener("submit", async (e) => {
     .catch((error) => console.log("Error:" + error));
 });
 
-async function age() {
-  let listAge;
-  for (let i = 18; i < 70; i++) {
-    listAge += `<option value="${i}">${i}</option>`;
-  }
-  ageInput.innerHTML = `${listAge}`;
-}
-
-age();
+Login.addEventListener("click", async (e) => {
+  e.preventDefault();
+  window.location.href = "../login";
+});
 
 btnViewPsw.addEventListener("click", function () {
   if (inputPassword.type === "password") {
     inputPassword.type = "text";
-    btnViewPsw.innerHTML=`<i class="fa-regular fa-eye"></i>`
+    btnViewPsw.innerHTML = `<i class="fa-regular fa-eye"></i>`;
   } else {
     inputPassword.type = "password";
-    btnViewPsw.innerHTML=`<i class="fa-regular fa-eye-slash"></i>`;
+    btnViewPsw.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`;
   }
 });
+
+age();

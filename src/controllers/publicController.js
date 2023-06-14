@@ -5,7 +5,7 @@ const publicController = {
     res.render("public/index", { isLogin: true, style: "/css/index.css" });
   },
   login: (req, res) => {
-    res.render("public/login", { isLogin: true, style: "/css/login.css" }); // Renderiza la vista login desde la carpeta "views/public"
+    res.render("public/login", { isLogin: true, style: "/css/login.css" });
   },
   signup: (req, res) => {
     res.render("public/signup", { isLogin: true, style: "/css/signup.css" });

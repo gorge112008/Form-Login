@@ -2,11 +2,11 @@
 
 /*********************************************************CONSTANTES/VARIABLES*************************************************************/
 const socket = io();
-let URLorigin = window.location.origin;
-let UrlU = URLorigin + "/api/users";
-let UrlM = URLorigin + "/api/messages";
-let UrlLogin = URLorigin + "/sessions/";
-let UrlCook = URLorigin + "/api/";
+let URLorigin = window.location.origin,
+  UrlU = URLorigin + "/api/users",
+  UrlM = URLorigin + "/api/messages",
+  UrlLogin = URLorigin + "/sessions/",
+  UrlCook = URLorigin + "/api/";
 let swalActive = "inactive";
 let email;
 let backMessages = [];
@@ -17,7 +17,6 @@ const chatBox = document.getElementById("chatBox"),
   btnSend = document.getElementById("btnSend"),
   emailLogged = document.querySelector(".nav__container--email-logged u"),
   rolLogged = document.querySelector(".nav__container--email-logged b");
-
 
 /*****************************************************************CLASES*************************************************************/
 class newMessage {
@@ -76,7 +75,7 @@ async function validateSession(rol, email) {
     preConfirm: () => {
       swalActive = "inactive";
     },
-  }).then(async(result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
       socket.emit("newUser", { user: email, id: socket.id });
       loadMessages();

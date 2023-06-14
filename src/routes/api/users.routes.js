@@ -31,7 +31,6 @@ routerUser.get("/users/:iud", async (req, res) => {
 });
 
 /*****************************************************************POST*************************************************************/
-
 routerUser.post("/users", async (req, res) => {
   try {
     const newUser = req.body;
@@ -43,7 +42,6 @@ routerUser.post("/users", async (req, res) => {
 });
 
 /*****************************************************************DELETE*************************************************************/
-
 routerUser.delete("/users/:iud", async (req, res) => {
   try {
     const iud = req.params.iud;

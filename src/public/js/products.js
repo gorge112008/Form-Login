@@ -1,16 +1,17 @@
+/*PRODUCTS*/
+
+/*********************************************************CONSTANTES/VARIABLES*************************************************************/
 const socket = io();
-let URLorigin=window.location.origin;
-let UrlP = URLorigin + "/api/products";
-let UrlC = URLorigin + "/api/carts";
-let UrlLogin = URLorigin + "/sessions/";
+let URLorigin = window.location.origin,
+  UrlP = URLorigin + "/api/products",
+  UrlC = URLorigin + "/api/carts",
+  UrlLogin = URLorigin + "/sessions/";
 let opc = "static";
-let btnAdd;
+let btnAdd, options, dataPagination;
 let storeProducts = [],
-  resExo = [];
-let options;
-let dataPagination;
-let query = {},
+  resExo = [],
   ListCarts = [];
+let query = {};
 
 const tittleDinamic = document.querySelector(".dinamic__tittle--h3"),
   form = document.querySelector("form"),
@@ -55,7 +56,7 @@ class NewParams {
 /*****************************************************************FUNCIONES*************************************************************/
 async function VerificateSession(ActiveSession) {
   try {
-    const {msj, rol}=ActiveSession
+    const { msj, rol } = ActiveSession;
     if (rol == "admin") {
       Swal.fire({
         position: "center",
@@ -101,7 +102,7 @@ async function createListCarts() {
     carts = await getDataCart();
   }
   let optListCarts = [];
-  ListCarts=[];
+  ListCarts = [];
   for (let i = 1; i <= carts.length; i++) {
     optListCarts[i] = `Cart (${i.toString()}): ${carts[i - 1]._id}`;
     ListCarts.push(carts[i - 1]._id);
@@ -191,7 +192,7 @@ function validarUrl() {
 }
 
 async function selectAction() {
-  if (RouteIndex==="productP/") {
+  if (RouteIndex === "productP/") {
     categoryOption.value = storeProducts[0].category;
     tittleDinamic.innerHTML = "View Product";
     inputTittle.value = storeProducts[0].tittle;
@@ -358,8 +359,8 @@ async function pagination() {
     prevLink,
     nexLink,
   } = dataPagination;
-  let prevLinkUp=URLorigin+prevLink;
-  let nexLinkUp=URLorigin+nexLink;
+  let prevLinkUp = URLorigin + prevLink;
+  let nexLinkUp = URLorigin + nexLink;
   dinamicPages.innerHTML = "";
   dinamicPages.innerHTML = `<p>Page<button>${page}</button>of ${totalPages}</p>`;
   if (hasPrevPage == false) {
@@ -416,7 +417,8 @@ async function getData(params) {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
       mode: "cors",
-    });JSON.stringify
+    });
+    JSON.stringify;
     const data = await response.json();
     dataPagination = data;
     const newData = data.payload;
@@ -593,15 +595,14 @@ socket.on("callProductsPublic", async (getProducts) => {
   sessionStorage.removeItem("values");
   if (storeProducts.length == 1) {
     sessionStorage.setItem("productView", storeProducts[0]._id);
-    if (RouteIndex==="productP") {
+    if (RouteIndex === "productP") {
       storeProducts = await getData();
       filters();
       validateProducts.click();
-      ;
     }
-  }else if (storeProducts.length != 1) {
-    if (RouteIndex==="productP/" ) {
-      let idProduct=sessionStorage.getItem("productView");
+  } else if (storeProducts.length != 1) {
+    if (RouteIndex === "productP/") {
+      let idProduct = sessionStorage.getItem("productView");
       storeProducts = await getDatabyID(idProduct);
       filters();
     }
@@ -609,12 +610,12 @@ socket.on("callProductsPublic", async (getProducts) => {
   focusAction();
   selectAction();
   filters();
-  userSession!= null&&VerificateSession(userSession);
+  userSession != null && VerificateSession(userSession);
 });
 
 socket.on("f5deleteProduct", async (deletedMsj) => {
   console.log(deletedMsj.msj);
-  if (RouteIndex==="productP") {
+  if (RouteIndex === "productP") {
     storeProducts = await getData({});
     filters();
   } else {
@@ -633,7 +634,7 @@ socket.on("f5deleteProduct", async (deletedMsj) => {
 
 socket.on("f5updateProduct", async (updatedMsj) => {
   console.log(updatedMsj);
-  if (RouteIndex==="productP/") {
+  if (RouteIndex === "productP/") {
     let productUpdate = await getDatabyID(storeProducts[0]._id);
     storeProducts = productUpdate;
     selectAction();
@@ -647,7 +648,7 @@ socket.on("f5updateProduct", async (updatedMsj) => {
 
 socket.on("updatingProduct", async (updatingMsj) => {
   console.log(updatingMsj);
-  if (RouteIndex==="productP/") {
+  if (RouteIndex === "productP/") {
     validateProducts.classList.add("hidden");
     let productUpdate = await getDatabyID(storeProducts[0]._id);
     storeProducts = productUpdate;
@@ -660,7 +661,7 @@ socket.on("updatingProduct", async (updatingMsj) => {
 
 socket.on("orderExonerate", async (msj) => {
   console.log(msj);
-  if (RouteIndex==="productP/") {
+  if (RouteIndex === "productP/") {
     socket.emit("responseExonerate", storeProducts[0]._id);
     //console.log("Response de producto a exonerar emitido");
   }
@@ -674,7 +675,7 @@ socket.on("idExonerate", async (id) => {
 
 socket.on("actualize", async (products) => {
   console.log("Successfully Validation");
-  if (RouteIndex==="productP") {
+  if (RouteIndex === "productP") {
     storeProducts = products;
     filters();
   }
@@ -687,12 +688,12 @@ socket.on("finValidate", async (msj) => {
 
 socket.on("NewCart", async (msj) => {
   console.log(msj);
-  ListCarts=[];
+  ListCarts = [];
 });
 
 socket.on("removeCart", async (msj) => {
   console.log(msj);
-  ListCarts=[];
+  ListCarts = [];
 });
 
 /*****************************************************************EVENTOS*************************************************************/

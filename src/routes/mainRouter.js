@@ -12,7 +12,7 @@ routerViews.get("/", publicController.login);
 
 routerViews.get("/login", publicController.login);
 
-routerViews.get("/signup",publicController.signup);
+routerViews.get("/signup", publicController.signup);
 
 routerViews.get("/profile", validateSession, publicController.profile);
 
